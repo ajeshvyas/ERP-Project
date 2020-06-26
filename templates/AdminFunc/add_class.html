@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block admin_title %}{% if update %}Update Class{% else %}Add Class{% endif %}{% endblock %}
+{% block classes_menu %}menu-open{% endblock %}
+{% block classes_active %}active{% endblock %}
+{% block h_margin %}{% if update %}36.4{% else %}40{% endif %}{% endblock %}
+{% block page_heading %}{% if update %}Update{% else %}Add{% endif %} Classes{% endblock%}
+{% block p_heading_edit %}
+<a href="/adminf/show_classes/"><button class="btn btn-info">Back</button></a>
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<div class="row ml-3 mr-0 my-5 pr-3 justify-content-center">
+	<div class="col-sm-6">
+		<!-- Response Modal -->
+		{% if data%}
+		<div class="alert alert-success alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>{{data}}</strong>
+		</div>
+		{%endif%}
+		<!-- Data -->
+		{% if update %}
+		<div class="card">
+			<h5 class="card-header info-color white-text text-center py-4"><strong>Update Class</strong></h5>
+			<!--Card content-->
+			<div class="card-body px-lg-5 pt-0">
+				<!-- Form -->
+				<form class="text-center" method="post" style="color: #757575;">
+					{% csrf_token %}
+					<div class="md-form">
+						<input type="text" id="add_class" name="topic" value="{{update.topic}}" class="form-control">
+						<input type="hidden" id="hid_add_class" value="{{update.topic}}">
+						<label for="topic">Topic Name</label>
+					</div>
+					<div class="md-form">
+						<label for="fess">Fees</label>
+						<input type="Number" step="any" id="fees" value="{{update.fees}}" name="fees" class="form-control">
+					</div>
+					<button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Update</button>
+				</form>
+				<!-- Form -->
+			</div>
+		</div>
+		{% else %}
+		<div class="card">
+			<h5 class="card-header info-color white-text text-center py-4"><strong>Add Class</strong></h5>
+			<!--Card content-->
+			<div class="card-body px-lg-5 pt-0">
+				<!-- Form -->
+				<form class="text-center" method="post" style="color: #757575;">
+					{% csrf_token %}
+					<div class="md-form">
+						<input type="text" id="add_class" name="topic" class="form-control">
+						<label for="add_class">Topic Name</label>
+					</div>
+					<div class="md-form">
+						<input type="Number" placeholder="Fees" step="any" id="fees" name="fees" class="form-control">
+					</div>
+					<button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Create</button>
+				</form>
+				<!-- Form -->
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+{% if update %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    //  Password validation using jq
+    $('#add_class').keyup(function(){
+      var value = $('#add_class').val();
+      var already = $('#hid_add_class').val();
+      if (value!=already){
+			$.ajax({
+	        url:'/adminf/validate_class_name',
+	        data:{'value':value},
+	        type:'get',
+	        dataType:'json',
+	        beforeSend: function() {
+	            $('#result').remove();
+	        },
+	        success:function(response){
+	          if(response.is_exist){
+	            var mes = '<i id="result" style="color: red;">Class already added!</i>'
+	            $("#add_class").after(mes);
+	          }
+	        }
+	      })//ajax end
+		}
+    });
+});
+</script>
+
+{% else %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    //  Password validation using jq
+
+    $('#add_class').keyup(function(){
+      var value = $('#add_class').val();
+      $.ajax({
+        url:'/adminf/validate_class_name',
+        data:{'value':value},
+        type:'get',
+        dataType:'json',
+        beforeSend: function() {
+            $('#result').remove();
+        },
+        success:function(response){
+          if(response.is_exist){
+            var mes = '<i id="result" style="color: red;">Class already added!</i>'
+            $("#add_class").after(mes);
+          }
+        }
+      })//ajax end
+    });
+});
+</script>
+
+{% endif %}
+{% endblock %}

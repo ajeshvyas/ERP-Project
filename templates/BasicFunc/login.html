@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+	{% block title %}Login{% endblock %}
+	{%block login %}active{% endblock %}
+	{% block body %}
+		<!-- Material form login -->
+		<div class="container">
+			<div class="row text-center justify-content-center">
+				<div class="col-lg-6">
+					<div class="card" style="margin-top: 3%;">
+
+		  				<h5 class="card-header indigo white-text text-center py-4">
+		    				<strong>Sign in</strong>
+		  				</h5>
+
+		  <!--Card content-->
+		  				<div class="card-body px-lg-5 pt-0">
+
+		    <!-- Form -->
+		    				<form class="text-center" style="color: #757575;" method="post">
+		    					{% csrf_token %}
+
+		      <!-- Email -->
+		      					<div class="md-form">
+		        					<input type="text" id="materialLoginFormUsername" name="username" class="form-control">
+		        					<label for="materialLoginFormUsername">User-Name</label>
+		      					</div>
+
+		      <!-- Password -->
+								<div class="md-form">
+									<input type="password" id="materialLoginFormPassword" name="password" class="form-control">
+									<label for="materialLoginFormPassword">Password</label>
+								</div>
+								{% if msg %}
+									<i style="color: red;">{{ msg }}</i>
+								{% endif %}
+		      					<div class="d-flex justify-content-around">
+		        					<div>
+		          <!-- Forgot password -->
+		          					<a href="">Forgot password?</a>
+		        					</div>
+		      					</div>
+
+		      <!-- Sign in button -->
+		      					<button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Log-in</button>
+	<!-- Form 	-->			</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Material form login -->
+	{% endblock %}

@@ -1,0 +1,16 @@
+[class*=sidebar-dark-] {
+	background-color: #3f51b5;
+}
+.navbar-white {
+    background-color: #3f51b5;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+.navbar-light .navbar-nav .nav-link:hover {
+    color: white;
+}
+.navbar-light .navbar-nav>.nav-item>.nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+}

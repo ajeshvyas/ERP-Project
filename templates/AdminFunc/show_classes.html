@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block admin_title %}Classes{% endblock %}
+{% block classes_active %}active{% endblock %}
+{% block h_margin %}42.5{% endblock %}
+{% block page_heading %}Classes{% endblock%}
+{% block p_heading_edit %}
+<a href="/adminf/add_class/"><button class="btn btn-info">Add Class</button></a>
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<div class="row ml-3 mr-0 pr-3">
+
+	{% for i in data %}
+	<div class="col-sm-4">
+		<div class="card mt-4">
+			<div class="card-body text-center">
+				<h5 class="card-title"><h2>{{ i.topic }}</h2></h5>
+				<hr class="mt-3 mb-2">
+				<h6 class="card-subtitle mt-2 text-muted">Added by- {{ i.added_by }}</h6>
+				<div class="mt-2 mb-2">
+					<div style="background-color:#3f51b5" class="p-2 rounded-pill text-white">Students-500</div>
+				</div>
+				<div class="mt-2 mb-2">
+					{% for subjects in i.subjects_set.all %}
+						{% if forloop.last %}
+						<input type="hidden" id="sub_val{{i.id}}" value="1">
+						<a><div style="background-color:#3f51b5" class="p-2 rounded-pill text-white subj" id="{{i.id}}">Subjects - {{ forloop.counter }}</div></a>
+						{% endif %}
+					{% empty %}
+						<a><div id="{{i.id}}" style="background-color:#3f51b5" class="p-2 rounded-pill subj text-white">Subjects - 0</div></a>
+					{% endfor %}
+					<!--Modal Start -->
+					<div class="modal fade" id="subj_modal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+						<div class="modal-dialog .modal-dialog-scrollable modal-dialog-centered" role="document">
+
+							<div style="background-color:white" class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Subjects in {{ i.topic }}</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body">
+									<!-- Message in modal -->
+									<div class="modal fade" id="subj_delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  										<div class="modal-dialog modal-dialog-centered" role="document">
+										    <div class="modal-content">
+										      	<div class="modal-header">
+										        	<h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check" style="color:green;" aria-hidden="true"></i> Deleted Successfully</h5>
+										      	</div>
+										    </div>
+										</div>
+									</div>
+									<!-- modal end message -->
+									<div class="table-responsive">
+										<!--Table-->
+										<table class="table text-dark" >
+											<!--Table head-->
+											<thead>
+												<tr>
+													<th scope="col">Name</th>
+													<th scope="col">Weightage</th>
+													<th scope="col">Action</th>
+													<th scope="col"></th>
+												</tr>
+											</thead>
+											<!--Table head-->
+											{% for sub in i.subjects_set.all %}
+											<!--Table body-->
+											<tbody>
+												<tr class="del_tr">
+													<td scope="row">{{ sub.topic }}</td>
+													<td scope="row">{{ sub.weightage }}</td>
+													<td scope="row"><a href="/adminf/edit_subjects/{{sub.id}}/"><div class="p-2 rounded-pill bg-info text-white">Edit Subject</div></a></td>
+													<td scope="row"><i id="{{ sub.id }}" class="fa fa-trash delete_subj"></i></td>
+												</tr>
+											</tbody>
+											<!--Table body-->
+											{% endfor %}
+										</table>
+									</div>
+									<!--Table-->
+								</div>
+								<div class="modal-footer">
+									<button type="button" style="background-color:#3f51b5" class="btn text-white rounded-pill" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--Modal End-->
+				</div>
+				<div class="mt-2 mb-2">
+					<a href="/adminf/add_subjects/{{i.id}}/"><div style="background-color:#3f51b5" class="p-2 rounded-pill text-white">Add Subjects</div></a>
+				</div>
+				<a href="/adminf/edit_class/{{i.id}}/"><button class="btn btn-info card-link">Edit</button></a>  <button id="{{i.id}}" class="btn btn-danger del_btn">Delete</button>
+			</div>
+		</div>
+	</div>
+	{% empty %}
+	<h3>No data Found</h3>
+	{% endfor %}
+</div>
+
+<div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check" style="color:green;" aria-hidden="true"></i> Deleted Success fully</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		$(".del_btn").click(function(){
+      		var d = $(this).attr('id')
+      		$.ajax({
+        		url:'/adminf/delete_class/',
+        		data:{'id':d},
+        		type:'get',
+        		dataType:'json',
+        		success:function(response){
+          			if(response.resp){
+          				$('#delete_modal').modal('toggle')
+          				setTimeout(function() { $('#delete_modal').modal('toggle'); }, 1000);
+          			}
+          			else{
+            		}
+    			}
+      		})//ajax end
+      		$(this).parents(".col-sm-4").hide();
+		})
+		$(".subj").click(function(){
+			var subj_id = 'subj_modal'+$(this).attr('id')
+			var val_id = 'sub_val'+$(this).attr('id')
+			var subval = $("#"+val_id).val()
+			if (subval==1){
+				$("#"+subj_id).modal('toggle')
+			}
+		});
+		$(".delete_subj").click(function(){
+			var d = $(this).attr('id')
+			$.ajax({
+        		url:'/adminf/delete_subject/',
+        		data:{'id':d},
+        		type:'get',
+        		dataType:'json',
+        		success:function(response){
+          			if(response.resp){
+          				$('#subj_delete_modal').modal('toggle')
+          				setTimeout(function() { $('#subj_delete_modal').modal('toggle'); }, 1000);
+          			}
+    			}
+      		})//ajax end
+      		$(this).parents(".del_tr").hide();
+		});
+	});
+
+</script>
+{% endblock %}

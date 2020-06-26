@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% block admin_title %}{% if stud %}Students Profile{% else %}Employee Profile{% endif %}{% endblock %}
+{% block page_heading %}{% if stud %}Students{% else %}Employees{% endif %}{% endblock%}
+{% block h_margin %}{% if stud %}40{% else %}40{% endif %}{% endblock %}
+{% block student_active %}{% if stud %}active{% endif %}{% endblock %}
+{% block p_heading_edit %}
+    {% if stud %}
+        <a href="/adminf/show_students/"><button class="btn btn-info">Back</button></a>
+    {% else %}
+        <a href="/adminf/show_employees/"><button class="btn btn-info">Back</button></a>
+    {% endif %}
+{% endblock %}
+{% block employees_active %}{% if employee %}active{% endif %}{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for message in messages %}
+    <strong>{{message}}</strong>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if stud %}
+
+<div class="row mb-4">
+    <!--Grid column-->
+    <div class="col-md-4 mb-4">
+        <div class="card mb-4 text-center border-0">
+            <div class="card-body">
+                <div class="col-3">
+                    <img src="{{stud.img.url}}" alt="{{stud.img}}" id="image_upload_preview" style="max-height:10rem;min-height:10rem;max-width:12rem;min-width:10rem; margin-left: 135%; border-radius:50%;">
+                </div>
+            </div>
+            <div class="card-footer border-0 bg-white">
+            	<form method="post" enctype="multipart/form-data">
+            		{% csrf_token %}
+            		<label for='pic-inpt' class="btn btn-info">Change</label></button>
+            		<input  class="required borrowerImageFile" data-errormsg="PhotoUploadErrorMsg" name="img" type="file" accept="image/*" id="pic-inpt" style="display:none;">
+            		<input type="hidden" name="subnum" value="1">
+            		<button type="submit" id="img-btn-save" disabled="true" class="btn btn-success">Save</button>
+            	</form>
+            </div>
+        </div>
+	</div>
+    <!--Grid column-->
+    <div class="col-md-8 mb-4">
+        <!--Card-->
+        <div class="card">
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Form -->
+                <form id="edit-user-form" method="post" name="">
+                	{% csrf_token %}
+                    <input type="hidden" name="subnum" value="2">
+                    <!--Input Name-->
+                    <label>First Name</label>
+                    <input value="{{user.first_name}}" name="fname" type="text" id="edit-first-name" class="form-control mb-3" placeholder="First name" required>
+                    <!--Input Name-->
+                    <label>Last Name</label>
+                    <input value="{{user.last_name}}" name="lname" type="text" id="edit-last-name" class="form-control mb-3" placeholder="Last name" required>
+                    <!--Input Name-->
+                    <label>Father's Name</label>
+                    <input value="{{stud.father_name}}" type="text" class="form-control mb-3" name="father_name" placeholder="Father's Name">
+                    <!--Input Name-->
+                    <label>Mother's Name</label>
+                    <input value="{{stud.mother_name}}" type="text" name="mother_name" class="form-control mb-3" placeholder="Mother's Name">
+                    <!--Input Name-->
+                    <label>Father's Occupation</label>
+                    <input value="{{stud.father_occupation}}" type="text" name="father_occupation" class="form-control mb-3" placeholder="Father's Occupation">
+                    <!--Input Name-->
+                    <label>Mother's Occupation</label>
+                    <input value="{{stud.mother_occupation}}" type="text" name="mother_occupation" class="form-control mb-3" placeholder="Mother's Occupation">
+                    <!--Input Name-->
+                    <label>Father's Contact</label>
+                    <input value="{{stud.father_no}}" type="number" pattern="[0-9]{10}" name="father_no" class="form-control mb-3" placeholder="Father's Contact" required>
+                    <!--Input Name-->
+                    <label>Mother's Contact</label>
+                    <input value="{{stud.mother_no}}" type="number" pattern="[0-9]{10}" name="mother_no" class="form-control mb-3" placeholder="Mother's Contact" required>
+                    <!--Input Name-->
+                    <label>Alternate Contact</label>
+                    <input value="{{stud.alt_no}}" type="number" pattern="[0-9]{10}" name="alt_no" class="form-control mb-3" placeholder="Alternate Contact">
+                    <!--Input Name-->
+                    <label>Permanent Address</label>
+                    <input value="{{stud.perm_address}}" type="text" name="perm_address" class="form-control mb-3" placeholder="Permanent Address" required>
+                    <!--Input Name-->
+                    <label>Date Joined</label>
+                    <input value="{{user.date_joined}}" type="text" disabled="true" name="datejoin" class="form-control mb-3" placeholder="Date Joined">
+                    <!--Input Name-->
+                    <label>Date Of Birth <small>(yyyy-mm-dd)</small></label>
+                    <input value="{{stud.dob|date:'Y-m-d'}}" type="date" name="dob" class="form-control mb-3" placeholder="Date Of Birth" required>
+                    <!-- Select menu-->
+                    <label>Gender</label>
+                    <select class="form-control mb-3" name="gender">
+                    	<option selected="true">Select</option>
+                    	<option {% if stud.gender == 'Male' %}selected{%endif%} value="Male">Male</option>
+                    	<option {% if stud.gender == 'Female' %}selected{%endif%} value="Female">Female</option>
+                    	<option {% if stud.gender == 'Others' %}selected{%endif%} value="Others">Others</option>
+                    </select>
+                    <!-- Select menu-->
+                    <label>Nationality</label>
+                    <select class="form-control mb-3" name="nationality">
+                    	<option selected="true">Select</option>
+                    	<option {% if stud.nationality == 'Indian' %}selected{%endif%} value="Indian">Indian</option>
+                    	<option {% if stud.nationality == 'Other' %}selected{%endif%} value="Other">Other</option>
+                    </select>
+                    <!-- Action button -->
+                    <div class="text-center">
+                        <button id="edit-user" type="submit" class="btn btn-info btn-md waves-effect waves-light">Save changes</button>
+                    </div>
+                </form>
+                <!-- Form -->
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--Grid column-->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+        		var reader = new FileReader();
+				reader.onload = function (e) {
+                	$('#image_upload_preview').attr('src', e.target.result);
+                }
+				reader.readAsDataURL(input.files[0]);
+				$("#img-btn-save").prop('disabled',false)
+        	}
+    	}
+		$("#pic-inpt").change(function () {
+   			readURL(this);
+    	});
+	});
+</script>
+
+<!--___________________________________________Employee Block Here ____________________________-->
+
+{% else %}
+
+<div class="row mb-4">
+    <!--Grid column-->
+    <div class="col-md-4 mb-4">
+        <div class="card mb-4 text-center border-0">
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="col-3">
+                    <img src="{{employee.img.url}}" alt="{{employee.img}}" id="image_upload_preview" style="max-height:10rem;min-height:10rem;max-width:12rem;min-width:10rem; margin-left: 135%; border-radius:50%;">
+                </div>
+            </div>
+            <div class="card-footer border-0 bg-white">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for='pic-inpt' class="btn btn-info">Change</label></button>
+                    <input  class="required borrowerImageFile" data-errormsg="Upload Error Try Again" name="img" type="file" accept="image/*" id="pic-inpt" style="display:none;">
+                    <input type="hidden" name="subnum" value="1">
+                    <button type="submit" id="img-btn-save" disabled="true" class="btn btn-success">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--Grid column-->
+    <div class="col-md-8 mb-4">
+        <!--Card-->
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-body">
+                <!-- Form -->
+                <form id="edit-user-form" method="post" name="">
+                    {% csrf_token %}
+                    <input type="hidden" name="subnum" value="2">
+                    <!--Input Name-->
+                    <label>First Name</label>
+                    <input value="{{user.first_name}}" name="fname" type="text" id="edit-first-name" class="form-control mb-3" placeholder="First name" required>
+                    <!--Input Name-->
+                    <label>Last Name</label>
+                    <input value="{{user.last_name}}" name="lname" type="text" id="edit-last-name" class="form-control mb-3" placeholder="Last name" required>
+                    <!--Input Name-->
+                    <label>Experience</label>
+                    <input value="{{employee.experience}}" type="number" pattern="[0-9]{1,2}" class="form-control mb-3" name="experience" placeholder="Experience in years" required>
+                    <!--Input Name-->
+                    <label>Specialization</label>
+                    <input value="{{employee.specialization}}" type="text" name="specialization" class="form-control mb-3" placeholder="Specialization" required>
+                    <!--Input Name-->
+                    <label>Salary</label>
+                    <input value="{{employee.salary}}" type="number" pattern="[0-9]{3,7}" name="salary" class="form-control mb-3" placeholder="Salary Yearly" required>
+                    <!--Input Name-->
+                    <label>Employee Type</label>
+                    <select class="form-control mb-3" name="emp_type" required>
+                        <option selected="true">Select</option>
+                        <option {% if employee.emp_type == 'Teaching' %}selected{%endif%} value="Teaching">Teaching</option>
+                        <option {% if employee.emp_type == 'Non-Teaching' %}selected{%endif%} value="Non-Teaching">Non-Teaching</option>
+                    </select>
+                    <!--Input Name-->
+                    <label>Contact</label>
+                    <input value="{{employee.contact}}" type="number" pattern="[0-9]{10}" name="contact" class="form-control mb-3" placeholder="Contact" required>
+                    <!--Input Name-->
+                    <label>Alternate Contact</label>
+                    <input value="{{employee.alt_ph}}" type="number" pattern="[0-9]{10}" name="alt_ph" class="form-control mb-3" placeholder="Alternate Contact">
+                    <!--Input Name-->
+                    <label>Permanent Address</label>
+                    <input value="{{employee.address}}" type="text" name="address" class="form-control mb-3" placeholder="Permanent Address" required>
+                    <!--Input Name-->
+                    <label>Date Joined</label>
+                    <input value="{{user.date_joined}}" type="text" disabled="true" name="datejoin" class="form-control mb-3" placeholder="Date Joined">
+                    <!--Input Name-->
+                    <label>Date Of Birth <small>(yyyy-mm-dd)</small></label>
+                    <input value="{{employee.dob|date:'Y-m-d'}}" type="date" name="dob" class="form-control mb-3" placeholder="Date Of Birth" required>
+                    <!-- Select menu-->
+                    <label>Gender</label>
+                    <select class="form-control mb-3" name="gender">
+                        <option selected="true">Select</option>
+                        <option {% if employee.gender == 'Male' %}selected{%endif%} value="Male">Male</option>
+                        <option {% if employee.gender == 'Female' %}selected{%endif%} value="Female">Female</option>
+                        <option {% if employee.gender == 'Others' %}selected{%endif%} value="Others">Others</option>
+                    </select>
+                    <!-- Select menu-->
+                    <label>Nationality</label>
+                    <select class="form-control mb-3" name="nationality" required>
+                        <option selected="true">Select</option>
+                        <option {% if employee.nationality == 'Indian' %}selected{%endif%} value="Indian">Indian</option>
+                        <option {% if employee.nationality == 'Other' %}selected{%endif%} value="Other">Other</option>
+                    </select>
+                    <!-- Action button -->
+                    <div class="text-center">
+                        <button id="edit-user" type="submit" class="btn btn-info btn-md waves-effect waves-light">Save changes</button>
+                    </div>
+                </form>
+                <!-- Form -->
+            </div>
+        </div>
+        <!--/.Card-->
+    </div>
+    <!--Grid column-->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_upload_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+                $("#img-btn-save").prop('disabled',false)
+            }
+        }
+        $("#pic-inpt").change(function () {
+            readURL(this);
+        });
+    });
+</script>
+
+{% endif %}
+{% endblock %}

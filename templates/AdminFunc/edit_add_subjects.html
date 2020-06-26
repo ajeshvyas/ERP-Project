@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block admin_title %}{% if update %}Update Subject{%else%}Add Subjects{%endif%}{% endblock %}
+{% block classes_active %}active{% endblock %}
+{% block h_margin %}{% if update %}36.4{% else %}37.5{% endif %}{% endblock %}
+{% block page_heading %}{% if update %}Update Subject{% else %}Add Subject/s{% endif %}{% endblock%}
+{% block p_heading_edit %}
+<a href="/adminf/show_classes/"><button class="btn btn-info">Back</button></a>
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<div class="row ml-3 mr-0 my-3 pr-3 justify-content-center">
+    <div class="col-sm-6">
+        <!-- Response Alert -->
+        {% if data%}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{data}}</strong>
+        </div>
+        {%endif%}
+        <!-- Data Here -->
+        {% if update %}
+        <div class="card">
+            <h5 class="card-header info-color white-text text-center py-4"><strong>Edit Subject</strong></h5>
+            <div class="card-body px-lg-5 pt-0 mt-3">
+                <!-- Form -->
+                <form class="text-center" method="post" style="color: #757575;">
+                    {% csrf_token %}
+                    <div class="md-form">
+                        <input type="text" id="topic" value="{{update.topic}}" name="topic" class="form-control">
+                        <label for="topic">Topic Name</label>
+                    </div>
+                    <div class="md-form">
+                        <input type="Number" value="{{update.weightage}}" step="any" id="weightage" name="marks" class="form-control">
+                    </div>
+                    <input type="hidden" name="x_value" id="x_value" value="1">
+                    <button id="submit_btn" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <h5 class="card-header info-color white-text text-center py-4"><strong>Add Subjects for class {{ca.topic}}</strong></h5>
+            <div class="mt-2">
+                <button class="btn btn-info col-sm-4 ml-5" id="add_fields">Add Fields</button>
+                <button class="btn btn-danger col-sm-4" style="margin-left: 13.5%;" id="rem_fields">Remove</button>
+            </div>
+            <!--Card content-->
+            <div class="card-body px-lg-5 pt-0 mt-3">
+                <!-- Form -->
+                <form class="text-center" method="post" style="color: #757575;">
+                    {% csrf_token %}
+                    <div id="Element-div">
+                        <div class="editable">
+                            <div class="md-form">
+                                <input type="text" id="topic" name="topic1" class="form-control">
+                                <label for="topic">Topic Name</label>
+                            </div>
+                            <div class="md-form">
+                                <input type="Number" placeholder="Weightage" step="any" id="weightage" name="marks1" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="x_value" id="x_value" value="1">
+                    <button id="submit_btn" class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Create</button>
+                </form>
+                <!-- Form -->
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="modal modal-danger fade" id="add_warning" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+      	<div class="modal-content">
+        	<div class="modal-header">
+          		<h5 class="modal-title" id="head_text"><i class="fa fa-times" style="color:red;" aria-hidden="true"></i>  Cannot Add more than 10 Fields</h5>
+        	</div>
+      	</div>
+    </div>
+</div>
+<div class="modal modal-danger fade" id="rem_warning" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      	<div class="modal-content">
+        	<div class="modal-header">
+          		<h5 class="modal-title" id="head_text"><i class="fa fa-times" style="color:red;" aria-hidden="true"></i>  Cannot remove more Fields</h5>
+        	</div>
+      	</div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+  	$(document).ready(function(){
+    	var x=2;
+    	$("#add_fields").click(function(){
+      		var ele = '<div class="editable"><div class="md-form mt-2"><input type="text" id="topic'+x+'" name="topic'+x+'" class="form-control"><label for="topic'+x+'">Topic Name</label></div><div class="md-form"><input type="Number" placeholder="Weightage" step="any" id="weightage'+x+'" name="marks'+x+'" class="form-control"></div></div>';
+      		if(x<11){
+        		$("#Element-div").append(ele);
+        		x++;
+      		}
+      		else{
+        		$('#add_warning').modal('toggle')
+      		}
+    	})
+    	$("#rem_fields").click(function(){
+      		if(x>2){
+        		$("#Element-div").children("div[class=editable]:last").remove();
+        		x--;
+      		}
+      		else{
+        		$('#rem_warning').modal('toggle')
+      		}
+    	})
+      $("#submit_btn").click(function(){
+        $("#x_value").val(x-1)
+      })
+  	});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block student_active %}active{% endblock %}
+{% block h_margin %}37.5{% endblock %}
+{% block page_heading %}Add Students{% endblock%}
+{% block p_heading_edit %}
+<a href="/adminf/show_students/"><button class="btn btn-info">Back</button></a>
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      <!-- Response alert Here -->
+    {% if msg %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{msg}}</strong>
+    </div>
+    {% endif %}
+    <div class="table-wrapper">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="fname" class="form-control" name="first_name" required>
+                            <label for="fname" class="active">First Name*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="lname" class="form-control" name="last_name" required>
+                            <label for="lname" class="active">Last Name*</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="uname" class="form-control" name="username" required>
+                            <label for="uname" class="active">Username*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-envelope prefix active"></i>
+                            <input type="email" id="email" class="form-control" name="email" required>
+                            <label for="email" class="active">Email*</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-key prefix active"></i>
+                            <input type="password" id="password" class="form-control" name="password" required>
+                            <label for="password" class="active">Password*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-key prefix active"></i>
+                            <input type="password" id="confirm_password" class="form-control" required>
+                            <label for="confirm_password" class="active">Confirm Password*</label>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <input type="hidden" name="created_by" value={{ request.user }}>
+        </table>
+    </div>
+    <div class="table-wrapper">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="father_name" class="form-control" name="father_name">
+                            <label for="father_name" class="active">Father's Name</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="mother_name" class="form-control" name="mother_name">
+                            <label for="mother_name" class="active">Mother's Name</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-tasks prefix active"></i>
+                            <input type="text" id="father_occupation" class="form-control" name="father_occupation">
+                            <label for="father_occupation" class="active">Father's Occupation</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-tasks prefix active"></i>
+                            <input type="text" id="mother_occupation" class="form-control" name="mother_occupation">
+                            <label for="mother_occupation" class="active">Mother's Occupation</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-phone prefix active"></i>
+                            <input type="tel" required pattern="[0-9]{10}" id="father_no" class="form-control" name="father_no">
+                            <label for="father_no" class="active">Father's Contact *</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-phone prefix active"></i>
+                            <input type="tel" pattern="[0-9]{10}" id="mother_no" class="form-control" name="mother_no" required>
+                            <label for="mother_no" class="active">Mother's Contact *</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-phone prefix active"></i>
+                            <input type="tel" pattern="[0-9]{10}" id="alt_no" class="form-control" name="alt_no">
+                            <label for="alt_no" class="active">Alternate Contact</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-calendar prefix"></i>
+                            <input type="date" id="dob" class="form-control" name="dob" required>
+                            <label for="dob" class="active">Date of Birth *</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="md-select form-control" name="gender">
+                                <option value="" disabled selected>Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="md-select form-control" name="nationality">
+                                <option value="" disabled selected>Nationality *</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="md-form form-sm ml-3" style="width:60rem;">
+            <i class="fa fa-home prefix active"></i>
+            <input type="text" id="perm_address" class="form-control" name="perm_address" required>
+            <label for="perm_address" class="active">Address *</label>
+        </div>
+        <hr>
+        <div>
+            <button style="margin-left: 45%" id="save_btn" class="btn btn-info">Save</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    //  Password validation using jq
+
+    $('#save_btn').click(function(){
+      var pass = $('#password').val();
+      var c_pass = $('#confirm_password').val();
+      if (pass !== c_pass){
+        alert('Password not matched')
+        return false;
+      }
+      else{
+        return true;
+      }
+    })
+    //  password validation ends here
+
+    // Username validation using ajax
+
+    $('#uname').blur(function() {
+      var uname = $('#uname').val();
+      $.ajax({
+        url:'/adminf/validate_username',
+        data:{'username':uname},
+        type:'get',
+        dataType:'json',
+        success:function(response){
+          if(response.is_exist){
+            var mes = '<i id="result" style="color: red;">UserName not available</i>'
+            $("#uname").after(mes);
+            $("#save_btn").prop('disabled', true);
+          }
+          else {
+            $("#save_btn").prop('disabled', false);
+          }
+        }
+      })//ajax end
+    })
+    // Usrname validation ends here
+    // Email validation usin ajax here
+    $('#email').blur(function() {
+      var uname = $('#email').val();
+      $.ajax({
+        url:'/adminf/validate_email',
+        data:{'email':uname},
+        type:'get',
+        dataType:'json',
+        success:function(response){
+          if(response.is_exist){
+            var mes = '<i id="result" style="color: red;">Email already exist</i>'
+            $("#email").after(mes);
+            $("#save_btn").prop('disabled', true);
+          }
+          else {
+            $("#save_btn").prop('disabled', false);
+          }
+        }
+      })//ajax end
+    })
+  })
+
+</script>
+{% endblock %}

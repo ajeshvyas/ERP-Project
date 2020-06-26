@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block admin_title %}Institute Info{% endblock %}
+{% block page_heading %}Institute Info{% endblock%}
+{% block h_margin %}40{% endblock %}
+{% block institute_active %}active{% endblock %}
+{% block admin_body %}
+
+<!--____________________End Blocks____________________________________________-->
+
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for message in messages %}
+    <strong>{{message}}</strong>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="row">
+  <div class="col-md-4"></div>
+    <!--Grid column-->
+    <div class="col-md-4">
+        <div class="card mb-4 text-center border-0">
+            <div class="card-body">
+                <div class="col-3">
+                    <img src="{{data.logo.url}}" alt="{{data.logo}}" id="image_upload_preview" style="max-height:10rem;min-height:10rem;max-width:12rem;min-width:10rem; margin-left: 80%; border-radius:50%;">
+                </div>
+            </div>
+            <div class="card-footer border-0 bg-white">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for='pic-inpt' class="btn btn-info">Change</label>
+                <input  class="required borrowerImageFile" data-errormsg="PhotoUploadErrorMsg" name="logo" type="file" accept="image/*" id="pic-inpt" style="display:none;">
+                <input type="hidden" name="subnum" value="1">
+                <button type="submit" id="img-btn-save" disabled="true" class="btn btn-success">Save</button>
+              </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+    <!-- Material form subscription -->
+        <div class="card">
+            <div class="card-body px-lg-5">
+                <!-- Form -->
+                <form class="text-center" method="post" style="color: #757575;">
+                    {% csrf_token %}
+                    <input type="hidden" name="subnum" value="2">
+                    <!-- Name -->
+                    <div class="md-form mt-3">
+                        <input value="{{data.name}}" name="name" type="text" id="materialSubscriptionFormPasswords" class="form-control">
+                        <label for="materialSubscriptionFormPasswords">Name</label>
+                    </div>
+                    <!-- slogan -->
+                    <div class="md-form mt-3">
+                        <input value="{{data.slogan}}" name="slogan" type="text" id="slogan" class="form-control">
+                        <label for="slogan">Slogan</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.contact}}" name="contact" type="number" pattern="[0-9]{10}" id="contact" class="form-control">
+                        <label for="contact">Contact <small>+91 </small></label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.alt_contact}}" name="alt_contact" type="number" pattern="[0-9]{10}" id="alternate" class="form-control">
+                        <label for="alternate">Alternate Contact</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="https://{{data.website}}" name="website" type="url" id="url" class="form-control">
+                        <label for="url">Website</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.email}}" type="email" name="email" id="email" class="form-control">
+                        <label for="email">Email</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.address}}" type="text" name="address" id="address" class="form-control">
+                        <label for="address">Address</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.city}}" type="text" name="city" id="city" class="form-control">
+                        <label for="city">City</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.state}}" type="text" name="state" id="state" class="form-control">
+                        <label for="state">State</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <input value="{{data.country}}" type="text" name="country" id="country" class="form-control">
+                        <label for="country">Country</label>
+                    </div>
+
+                    <div class="md-form mt-3">
+                        <textarea id="rules" name="rules" class="form-control md-textarea" name="rules" rows="3">{{data.rules}}</textarea>
+                        <label for="rules">Rules And Regulations</label>
+                    </div>
+
+                    <!-- Sign in button -->
+                    <button class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Save</button>
+                </form>
+                <!-- Form -->
+            </div>
+        </div>
+        <!-- Material form subscription -->
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_upload_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+                $("#img-btn-save").prop('disabled',false)
+            }
+        }
+        $("#pic-inpt").change(function () {
+            readURL(this);
+        });
+    });
+</script>
+
+{% endblock %}

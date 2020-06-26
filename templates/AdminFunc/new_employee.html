@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block employees_active %}active{% endblock %}
+{% block h_margin %}37.5{% endblock %}
+{% block page_heading %}Add Employees{% endblock%}
+{% block p_heading_edit %}
+<a href="/adminf/show_employees/"><button class="btn btn-info">Back</button></a>
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<style type="text/css">
+input:invalid {
+    color:red;
+    border-color:red;
+}
+</style>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+        <div class="justify-content-center" style="margin-top: 1%">
+            <!-- Response Alert Here -->
+    {% if msg %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{msg}}</strong>
+    </div>
+    {% endif %}
+    <div class="table-wrapper">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="fname" class="form-control" name="first_name" required>
+                            <label for="fname" class="active">First Name*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="lname" required class="form-control" name="last_name">
+                            <label for="lname" class="active">Last Name*</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-user prefix active"></i>
+                            <input type="text" id="uname" required class="form-control" name="username">
+                            <label for="uname" class="active">Username*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-envelope prefix active"></i>
+                            <input type="email" id="email" required class="form-control" name="email">
+                            <label for="email" class="active">Email*</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-key prefix active"></i>
+                            <input type="password" required id="password" class="form-control" name="password">
+                            <label for="password" class="active">Password*</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-key prefix active"></i>
+                            <input type="password" required id="confirm_password" class="form-control">
+                            <label for="confirm_password" class="active">Confirm Password*</label>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <input type="hidden" name="is_staff" value=1>
+            <input type="hidden" name="created_by" value={{ request.user }}>
+        </table>
+    </div>
+    <div class="table-wrapper">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-handshake-o prefix"></i>
+                            <input type="date" id="date_of_joining" required class="form-control" name="date_joined">
+                            <label for="date_of_joining" class="active">Date Of Joining *</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-history prefix"></i>
+                            <input type="tel" id="experience" required pattern="[0-9]{1,2}" class="form-control" title="Only numbers in years are allowed. eg. 15" name="experience">
+                            <label for="experience" class="active">Experience<small>(when joining)</small> *</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-money prefix"></i>
+                            <input type="number" id="salary" class="form-control" step="any" name="salary" required>
+                            <label for="salary" class="active">Salary (yearly) *</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-code prefix active"></i>
+                            <input type="text" id="specialization" class="form-control" name="specialization" required>
+                            <label for="specialization" class="active">Specialization *</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="mdb-select form-control" name="emp_type" required>
+                            <option value="" disabled selected>Employee type *</option>
+                            <option value="Teaching">Teaching</option>
+                            <option value="Non-Teaching">Non Teaching</option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-calendar prefix"></i>
+                            <input type="date" id="dob" class="form-control" name="dob" required>
+                            <label for="dob" class="active">Date of Birth *</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-phone prefix active"></i>
+                            <input type="tel" required pattern="[0-9]{10}" id="contact" class="form-control" name="contact">
+                            <label for="contact" class="active">Contact No. *</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-phone prefix active"></i>
+                            <input type="tel" pattern="[0-9]{10}" id="alt_ph" class="form-control" name="alt_ph">
+                            <label for="alt_ph" class="active">Alternate Contact No.</label>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="mdb-select form-control" name="gender">
+                            <option value="" disabled selected>Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="mdb-select form-control" name="nationality" required>
+                            <option value="" disabled selected>Nationality *</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div class="md-form form-sm ml-3" style="width:58rem;">
+            <i class="fa fa-home prefix active"></i>
+            <input type="text" id="address" class="form-control" name="address" required>
+            <label for="address" class="active">Address *</label>
+        </div>
+        <hr>
+        <div>
+            <button style="margin-left: 45%" id="save_btn" class="btn btn-info">Save</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    //  Password validation using jq
+
+    $('#confirm_password').blur(function(){
+      var pass = $('#password').val();
+      var c_pass = $('#confirm_password').val();
+      if (pass !== c_pass){
+        var mes = '<i id="resultpass" style="color: red;">Password not matched</i>'
+        $("#confirm_password").after(mes);
+        $("#save_btn").prop('disabled', true);
+        return false;
+      }
+      else{
+        $("#resultpass").hide()
+        $("#save_btn").prop('disabled', false);
+        return true;
+      }
+    })
+    //  password validation ends here
+
+    // Username validation using ajax
+
+    $('#uname').keyup(function() {
+      var uname = $('#uname').val();
+      $.ajax({
+        url:'/adminf/validate_username',
+        data:{'username':uname},
+        type:'get',
+        dataType:'json',
+        success:function(response){
+          if(response.is_exist){
+            var mes = '<i id="resultuser" style="color: red;">UserName not available</i>'
+            $("#uname").after(mes);
+            $("#save_btn").prop('disabled', true);
+          }
+          else {
+            $("#resultuser").hide()
+            $("#save_btn").prop('disabled', false);
+          }
+        }
+      })//ajax end
+    })
+    // Usrname validation ends here
+    // Email validation usin ajax here
+    $('#email').keyup(function() {
+      var uname = $('#email').val();
+      $.ajax({
+        url:'/adminf/validate_email',
+        data:{'email':uname},
+        type:'get',
+        dataType:'json',
+        success:function(response){
+          if(response.is_exist){
+            var mes = '<i id="result" style="color: red;">Email already exist</i>'
+            $("#email").after(mes);
+            $("#save_btn").prop('disabled', true);
+          }
+          else {
+            $("#result").hide()
+            $("#save_btn").prop('disabled', false);
+          }
+        }
+      })//ajax end
+    })
+  })
+
+</script>
+{% endblock %}

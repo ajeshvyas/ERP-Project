@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block admin_title %}Employee Details{% endblock %}
+{% block page_heading %}Employee Details{% endblock%}
+{% block h_margin %}37.5{% endblock %}
+{% block p_heading_edit %}
+<a href="/adminf/show_employees/"><button class="btn btn-info">Back</button></a>
+{% endblock %}
+{% block employees_active %}active{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+
+<div class="content" style="background:#fff;">
+                            <div class="btn-controls">
+                            <div class="btn-box-row row-fluid">
+                               <div class="btn-box span4" style="background:url(images/image2.png) fixed;margin-bottom:0px;">
+                                 <div style="padding-top:15px;">
+                                 <img src="uploads/students/no-image.png" class="img-circle" style="width:150px; height:150px;">
+                                 </div>
+                                 <div style="padding-top:15px;">
+                                 <h3 style="margin:0px;line-height:20px;">xyz</h3>
+                                 <h5 style="margin-top:0px;color:#333;">FATHER: </h5>
+                                 </div>
+                                 <div style="background:rgba(9, 103, 139, 0.36);text-align:left;color:#fff;padding-left:5px;">
+                                 <table style="width:100%;">
+                                 <tbody><tr><td>Reg. No.</td><td>110</td></tr>
+                                 <tr><td>Date Of Admission:</td><td>2020-06-08</td></tr>
+                                 <tr><td>Class:</td><td>JAVA BOOTCAMP</td></tr>
+                                 <tr><td>Discount In Fee:</td><td>5 %</td></tr>
+                                 </tbody></table>
+                                 </div>
+                                 <div style="color:#fff;text-align:left;padding-left:5px;">
+                                 <table style="width:100%;" id="tdesign">
+                                 <tbody><tr><td>Date Of Birth:</td><td>0000-00-00</td></tr>
+                                 <tr><td>Gender:</td><td>empty</td></tr>
+                                 <tr><td>B-Form:</td><td></td></tr>
+                                 <tr><td>Religion:</td><td>empty</td></tr>
+                                 <tr><td>OS:</td><td>empty</td></tr>
+                                 <tr><td>OSC:</td><td>empty</td></tr>
+                                 <tr><td>Previous School:</td><td></td></tr>
+                                 <tr><td>Cast:</td><td></td></tr>
+                                 
+                                 <tr><td>Total Children:</td><td>0</td></tr>
+                                 </tbody></table>
+                                 <table>
+                                 <tbody><tr><td>Address: </td></tr>
+                                 </tbody></table>
+                                 </div>
+                                 <div style="color:#fff;text-align:left;background:rgba(9, 103, 139, 0.36);padding-left:5px;">
+                                 <table style="width:100%;" id="tdesign">
+                                 <tbody><tr><td>Father CNIC:</td><td></td></tr>
+                                 <tr><td>Father Education:</td><td></td></tr>
+                                 <tr><td>Father Mobile:</td><td></td></tr>
+                                 <tr><td>Father Occupation:</td><td></td></tr>
+                                 <tr><td>Father Profession:</td><td></td></tr>
+                                 <tr><td>Father Income:</td><td>0</td></tr>
+
+                                 </tbody></table>
+                                 </div>
+                                 <div style="color:#fff;text-align:left;">
+                                 <table style="width:100%;" id="tdesign">
+                                 <tbody><tr><td>Mother Name:</td><td></td></tr>
+                                 <tr><td>Mother Education:</td><td></td></tr>
+                                 <tr><td>Mother CNIC:</td><td></td></tr>
+                                 <tr><td>Mother Mobile:</td><td></td></tr>
+                                 <tr><td>Mother Occupation:</td><td></td></tr>
+                                 <tr><td>Mother Profession:</td><td></td></tr>
+                                 <tr><td>Mother Income:</td><td>0</td></tr>
+                                 
+                                 </tbody></table>
+                                 </div>
+                               </div>
+                               <div class="btn-box span8" style="background:none;margin-bottom:0px;">
+                                 <div class="span12 row" style="background:#333;text-align:left;border-radius:10px;border-left:8px solid orange;">
+                                   <h5 style="padding-left:5px;padding-top:5px;padding-bottom:0px;">1. Attendance Report</h5>
+                                 </div>
+                                 <div class="span12 row" style="background:none;margin-left:0px;">
+                                     <div class="span7" style="float:left;"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div><canvas id="pieChart" style="display: block; width: 373px; height: 186px;" width="373" height="186" class="chartjs-render-monitor"></canvas></div>
+                                     <div class="span2" style="float:left;padding:10px;padding-left:0px;">
+                                      <h5 style="color:#333;">Attendance</h5>
+                                       <font style="color:#777;font-size:40px;"><span class="count">0</span>%</font>
+                                       <h5 style="color:#333;">This Month</h5>
+                                       <font style="color:#777;font-size:40px;"><span class="count">0</span>%</font>
+                                     </div>
+                                     <div style="float:left;padding:10px;text-align:center;" class="animated swing span3">
+                                      <h5 style="color:#333;">Today Status</h5>
+                                                                          <button style="border:4px solid #777;border-radius:90px;width:90px;height:90px;padding:0px;text-align:center;">
+                                      <font style="font-size:18px;">Absent</font></button>
+                                                                         </div>
+                                 </div>
+                                 <div class="span12 row" style="background:#333;text-align:left;border-radius:10px;border-left:8px solid orange;margin-left:0px;margin-top:15px;">
+                                   <h5 style="padding-left:5px;padding-top:5px;">2. Examination Report</h5>
+                                 </div>
+                                 <div class="span12 row" style="background:none;margin-left:0px;">
+                                                                            <h5 style="color:#999;text-align:center;"><br><img src="icons/skooly-icon.png" style="width:38px;height:38px;"><br> No Exam Data Has been Founded !<hr></h5>
+                                                                           </div>
+                               <div class="span12 row" style="background:#333;text-align:left;border-radius:10px;border-left:8px solid orange;margin-left:0px;margin-top:15px;">
+                                   <h5 style="padding-left:5px;padding-top:5px;">3. Class Mockups/Test Report</h5>
+                                 </div>
+                                 <div class="span12 row" style="background:none;margin-left:0px;">
+                                   
+                                   <table style="color:#333;width:100%;" class="table-striped">
+                                        <tbody><tr style="color:#F7464A;">
+                                        <td>Subject</td><td>Tests</td><td>Total Marks</td><td>Obtain Marks</td><td>%age</td>
+                                        </tr>
+                                                                        <tr>
+                                        <td>android</td>
+                                        <td><span class="count">0</span></td>
+                                        <td><span class="count">0</span></td>
+                                        <td><span class="count">0</span></td>
+                                        <td><span class="count">0</span> %</td>
+                                        </tr>
+                                                                           </tbody></table>
+                                   
+                                 </div>
+                                 <div class="span12 row" style="background:#333;text-align:left;border-radius:10px;border-left:8px solid orange;margin-left:0px;margin-top:15px;">
+                                   <h5 style="padding-left:5px;padding-top:5px;">4. Fee Report</h5>
+                                 </div>
+                                 <div class="span12 row" style="background:none;margin-left:0px;color:#333;">
+                                 <table style="width:100%;margin-top:5px;">
+                                 <tbody><tr style="color:orange;">
+                                 <td>Sr#</td><td>Fee Month</td><td>Submission Date</td><td>Total Amount</td><td>Deposit</td><td>Due-able</td>
+                                 </tr>
+                                                                 </tbody></table>
+                                 </div>
+                               </div>
+                            </div>
+                            <!--/#btn-controls-->
+                           
+                        </div>
+                        <!--/.content-->
+                    </div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Testing</title>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div class="col-sm-3">
+            <div style="background-color:#e8eaf6" class="card mt-4">
+              <a href="fake.html">
+              <div class="card card-cascade narrower rounded-bottom">
+
+  <!-- Card image -->
+  <div class="view view-cascade overlay">
+    <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(147).jpg"
+      alt="Card image cap">
+    <a>
+      <div class="mask rgba-white-slight"></div>
+    </a>
+  </div>
+
+  <!-- Card content -->
+  <div class="card-body card-body-cascade">
+
+    <!-- Label -->
+    <h5 class="pink-text ml-2"><i class="fas fa-utensils"></i> Culinary</h5>
+    <!-- Title -->
+    <h4 class="font-weight-bold card-title ml-2">Cheat day inspirations</h4>
+    <!-- Text -->
+    <div class="mt-2 mb-2">
+      <a href="#"><div style="background-color:#3f51b5;" class="p-2 rounded-pill text-white text-center">Edit</div></a>
+    </div>
+    <div class="mt-2 mb-2">
+      <a href="#"><div class="p-2 rounded-pill bg-danger text-white text-center">Delete</div></a>
+    </div>
+
+  </div>
+
+</div></a>
+
+            </div>
+        </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    var x=2;
+    $("#add_fields").click(function(){
+      var ele = '<div class="editable"><div class="md-form mt-2"><input type="text" id="topic'+x+'" name="topic'+x+'" class="form-control"><label for="topic'+x+'">Topic Name</label></div><div class="md-form"><input type="Number" placeholder="Fees" step="any" id="fees'+x+'" name="fees'+x+'" class="form-control"></div></div>';
+      if(x<11){
+        $("#Element-div").append(ele);
+        x++;
+      }
+      else{
+        $('#add_warning').modal('toggle')
+      }
+    })
+    $("#rem_fields").click(function(){
+      if(x>2){
+        $("#Element-div").children("div[class=editable]:last").remove();
+        x--;
+        alert(x);
+      }
+      else{
+        $('#rem_warning').modal('toggle')
+      }
+    })
+  });
+
+  </script>
+
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

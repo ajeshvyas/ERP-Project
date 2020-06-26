@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block admin_title %}{% if student %}Students{% else %}Employee{% endif %}{% endblock %}
+{% block page_heading %}{% if student %}Students{% else %}Employees{% endif %}{% endblock%}
+{% block h_margin %}{% if student %}40{% else %}40{% endif %}{% endblock %}
+{% block student_active %}{% if student %}active{% endif %}{% endblock %}
+{% block employees_active %}{% if employee %}active{% endif %}{% endblock %}
+{% block p_heading_edit %}
+    {% if student %}
+        <a href="/adminf/new_student/"><button class="btn btn-info">Add Student</button></a>
+    {% else %}
+        <a href="/adminf/new_employee/"><button class="btn btn-info">Add Employee</button></a>
+    {% endif %}
+{% endblock %}
+{% block admin_body %}
+
+<!--___________________________________Blocks End Here______________________________-->
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for message in messages %}
+    <strong>{{message}}</strong>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if student %}
+
+<div class="row ml-3 mr-0 pr-3">
+    {% for i in student %}
+    <div class="col-12 col-md-4 col-sm-4">
+        <!-- ADMIN LTE CARD -->
+        <div class="card mt-2 card-responsive" style="max-height: 24rem; min-height: 24rem;">
+            <div class="card-body pt-0 mt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="lead"><b>{{i.student.first_name|add:" "|add:i.student.last_name}}</b></h2>
+                    </div>
+                    <div class="col-7">
+                        <p class="text-muted text-sm"><b>About:</b><br>Class: Pyhton<br>Gender: {{i.gender}}<br>Nationality: {{i.nationality}} </p>
+                    </div>
+                    <div class="col-5 text-center mt-2">
+                        <a href="{{i.img.url}}" target="_blank"><img src="{{i.img.url}}" alt="{{i.img}}" class="img-circle img-fluid"></a>
+                    </div>
+                    <div class="col-12">
+                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                            <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Father: {{i.mother_no}}</li>
+                            <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Mother: {{i.father_no}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <a href="/adminf/print_letter/{{i.id}}/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill my-2 subj text-white">Print Letter</div></a>
+                    <a href="/adminf/student_academics/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill my-1 subj text-white">View Academics</div></a>
+                    <a href="/adminf/profile_student/{{i.id}}/" class="btn btn-sm btn-primary">View / Edit</a>
+                    <a href="/adminf/delete_student/{{i.id}}/" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h3>No data Found</h3>
+    {% endfor %}
+</div>
+<!--  ________________________________FOR EMPLYEES START HERE______________________________________-->
+{% else %}
+
+<div class="row ml-3 mr-0 pr-3">
+    {% for i in employee %}
+    <div class="col-12 col-md-4 col-sm-4">
+        <!-- ADMIN LTE CARD -->
+        <div class="card mt-2 card-responsive" style="max-height: 18rem; min-height: 18rem;">
+            <div class="card-body pt-0 mt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="lead mw-100"><b>{{i.employee.first_name|add:" "|add:i.employee.last_name}}</b></h2>
+                    </div>
+                    <div class="col-7">
+                        <p class="text-muted text-sm"><b>About: </b><br>Specialization: {{i.specialization}}<br>Gender: {{i.gender}}<br>Nationality: {{i.nationality}} </p>
+                    </div>
+                    <div class="col-5 text-center mt-2">
+                        <a href="{{i.img.url}}" target="_blank"><img src="{{i.img.url}}" alt="{{i.img}}" class="img-circle img-fluid"></a>
+                    </div>
+                    <div class="col-12">
+                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                            <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Contact: {{i.contact}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <a href="/adminf/view_employee/" class="btn btn-sm btn-primary">View</a>
+                    <a href="/adminf/edit_employee/{{i.id}}/" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="/adminf/delete_employee/{{i.id}}/" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h3>No data Found</h3>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
