@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block admin_title %}Accounts{% endblock %}
+{% block page_heading %}Accounts{% endblock%}
+{% block h_margin %}40.5{% endblock %}
+{% block admin_body %}
+
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for message in messages %}
+    <strong>{{message}}</strong>
+    {% endfor %}
+</div>
+{% endif %}
+      <div class="col-sm-12 indigo darken-4">
+      	<a href="" data-toggle="modal" data-target="#modalCreditForm" class="btn rounded-pill indigo lighten-5">Add Income</a>
+      	<a href="" data-toggle="modal" data-target="#modalDebitForm" style="float:right;" class="btn rounded-pill indigo lighten-5">Add Expense</a>
+      </div>
+  <table class="table text-center table-striped mb-3">
+  <thead class="indigo lighten-1 text-white">
+    <tr>
+      <th scope="col"><h5>Date</h5></th>
+      <th scope="col"><h5>Credit</h5></th>
+      <th scope="col"><h5>Debit</h5></th>
+      <th scope="col"><h5>Description</h5></th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% if data %}
+  	{% for i in data %}
+    <tr>
+      <th scope="row">{{i.date}}</th>
+      <td>{{i.deposite}}</td>
+      <td>{{i.withdrawal}}</td>
+      <td>{{i.description}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <th scope="col"><h5>Total</h5></th>
+      <th scope="col"><h5>{{credit}}</h5></th>
+      <th scope="col"><h5>{{debit}}</h5></th>
+      <th scope="col"><h5>= {{total}}</h5></th>
+    </tr>
+    {% else %}
+    <tr>
+    	<th></th>
+    	<th>No Data</th>
+    	<th>Found!</th>
+    	<th></th>
+    </tr>
+    {% endif  %}
+  </tbody>
+</table>
+<!-- __________________________Credit Modal _________________________________-->
+
+<div class="modal fade" id="modalCreditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Add Income</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="/adminf/accounts/">
+      	{% csrf_token %}
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fa fa-calendar prefix grey-text"></i>
+          <input type="date" id="form34" name="date" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="form34">Date</label>
+        </div>
+
+        <div class="md-form mb-5">
+          <i class="fa fa-money prefix grey-text"></i>
+          <input type="text" pattern="[0-9]{1,7}" name="credit" step="0.01" id="form29" class="form-control validate">
+          <label for="form29">Credit</label>
+        </div>
+
+        <div class="md-form">
+          <i class="fa fa-pencil prefix grey-text"></i>
+          <textarea type="text" pattern=".{1000}" name="description" id="form8" class="md-textarea form-control" rows="4"></textarea>
+          <label data-error="wrong" data-success="right" for="form8">Description</label>
+        </div>
+        <input type="hidden" name="debit" value="0">
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn indigo text-white">Add <i class="fa fa-plus ml-1"></i></button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- _________________________________Debit MODAL___________________________-->
+
+<div class="modal fade" id="modalDebitForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Add Expense</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post">
+      	{% csrf_token %}
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fa fa-calendar prefix grey-text"></i>
+          <input type="date" id="form34" name="date" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="form34">Date</label>
+        </div>
+
+        <div class="md-form mb-5">
+          <i class="fa fa-money prefix grey-text"></i>
+          <input type="text" pattern="[0-9]{1,7}" name="debit" step="0.01" id="form29" class="form-control validate">
+          <label for="form29">Debit</label>
+        </div>
+        <input type="hidden" name="credit" value="0">
+
+        <div class="md-form">
+          <i class="fa fa-pencil prefix grey-text"></i>
+          <textarea type="text" pattern=".{1000}" name="description" id="form8" class="md-textarea form-control" rows="4"></textarea>
+          <label data-error="wrong" data-success="right" for="form8">Description</label>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn text-white indigo">Add <i class="fa fa-plus ml-1"></i></button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

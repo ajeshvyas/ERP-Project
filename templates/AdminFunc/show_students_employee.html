@@ -29,7 +29,7 @@
     {% for i in student %}
     <div class="col-12 col-md-4 col-sm-4">
         <!-- ADMIN LTE CARD -->
-        <div class="card mt-2 card-responsive" style="max-height: 24rem; min-height: 24rem;">
+        <div class="card mt-2 card-responsive" style="max-height: 23rem; min-height: 23rem;">
             <div class="card-body pt-0 mt-2">
                 <div class="row">
                     <div class="col-12">
@@ -46,14 +46,16 @@
                             <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Father: {{i.mother_no}}</li>
                             <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Mother: {{i.father_no}}</li>
                         </ul>
+                        <div class="text-center mt-3">
+                            <a href="/adminf/print_letter/{{i.id}}/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill subj text-white">Print Letter</div></a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="text-center">
-                    <a href="/adminf/print_letter/{{i.id}}/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill my-2 subj text-white">Print Letter</div></a>
-                    <a href="/adminf/student_academics/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill my-1 subj text-white">View Academics</div></a>
-                    <a href="/adminf/profile_student/{{i.id}}/" class="btn btn-sm btn-primary">View / Edit</a>
+                    <a href="/adminf/student_academics/" class="btn btn-sm btn-primary">View</a>
+                    <a href="/adminf/profile_student/{{i.id}}/" class="btn btn-sm btn-warning">Edit</a>
                     <a href="/adminf/delete_student/{{i.id}}/" class="btn btn-sm btn-danger">Delete</a>
                 </div>
             </div>

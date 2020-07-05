@@ -58,3 +58,9 @@ class Institute_Info(models.Model):
 	state = models.CharField(max_length=50)
 	country = models.CharField(max_length=50)
 	rules = models.CharField(max_length=10000)
+
+class Accounts(models.Model):
+	date = models.DateField()
+	description = models.CharField(max_length=1000)
+	deposite = models.DecimalField(max_digits=7, decimal_places=2)
+	withdrawal = models.DecimalField(max_digits=7, decimal_places=2)

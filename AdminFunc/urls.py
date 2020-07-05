@@ -19,10 +19,10 @@ urlpatterns = [
 	path('delete_student/<id>/',views.Delete_Student),
 	path('institute_info/',views.Institute_info),
 	path('student_academics/',views.Academic_Details),
-	path('print_letter/<id>/',views.Print_Letter),
 	path('validate_class_name/',views.Validate_Class_Name),
 	path('delete_subject/',views.Delete_Subject),
 	path('view_employee/',views.View_Employees),
 	path('edit_employee/<id>/',views.Edit_Employee),
 	path('delete_employee/<id>/',views.Delete_Employee),
+	path('accounts/',views.Show_Accounts),
 ]
