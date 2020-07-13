@@ -25,4 +25,5 @@ urlpatterns = [
 	path('edit_employee/<id>/',views.Edit_Employee),
 	path('delete_employee/<id>/',views.Delete_Employee),
 	path('accounts/',views.Show_Accounts),
+	path('attendance/',views.Show_Attendance),
 ]

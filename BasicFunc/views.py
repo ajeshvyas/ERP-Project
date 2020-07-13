@@ -14,7 +14,6 @@ def user_login(request):
 	if request.method == 'POST':
 		uname = request.POST['username']
 		passw = request.POST['password']
-		print(uname,passw,'-'*50)
 		user = authenticate(username=uname, password=passw)
 		if user:
 			login(request, user)
@@ -29,13 +28,3 @@ def user_login(request):
 			return render(request,'BasicFunc/login.html',{'msg':'Wrong credentials! try again.'})
 	else:
 		return render(request,'BasicFunc/login.html')
-
-def testingd(request):
-	if request.method=='POST':
-		data = []
-		for i in range(4):
-			# name = 'testing_data'+str(i+1)
-			data.append(request.POST['testing_data'+str(i+1)])
-		print('*'*50,'\n',data)
-		return render(request,'testingd.html',{'data':data})
-	return render(request,'testingd.html')

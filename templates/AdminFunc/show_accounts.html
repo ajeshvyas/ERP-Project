@@ -3,6 +3,15 @@
 {% block page_heading %}Accounts{% endblock%}
 {% block h_margin %}40.5{% endblock %}
 {% block accounts_active %}active{% endblock %}
+{% block p_heading_edit %}
+<div class="dropdown">
+  <button class="btn text-white btn-info dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Record</button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu5">
+    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalCreditForm" class="btn rounded-pill indigo lighten-5">Add Income</a>
+    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalDebitForm" style="float:right;" class="btn rounded-pill indigo lighten-5">Add Expense</a>
+  </div>
+</div>
+{% endblock %}
 {% block admin_body %}
 
 {% if messages %}
@@ -13,10 +22,7 @@
     {% endfor %}
 </div>
 {% endif %}
-      <div class="col-sm-12 indigo darken-4">
-      	<a href="" data-toggle="modal" data-target="#modalCreditForm" class="btn rounded-pill indigo lighten-5">Add Income</a>
-      	<a href="" data-toggle="modal" data-target="#modalDebitForm" style="float:right;" class="btn rounded-pill indigo lighten-5">Add Expense</a>
-      </div>
+      {% if data %}
   <table class="table text-center table-striped mb-3">
   <thead class="indigo lighten-1 text-white">
     <tr>
@@ -27,8 +33,7 @@
     </tr>
   </thead>
   <tbody>
-  	{% if data %}
-  	{% for i in data %}
+  	{% for i in page %}
     <tr>
       <th scope="row">{{i.date}}</th>
       <td>{{i.deposite}}</td>
@@ -36,22 +41,21 @@
       <td>{{i.description}}</td>
     </tr>
     {% endfor %}
+    
     <tr>
       <th scope="col"><h5>Total</h5></th>
       <th scope="col"><h5>{{credit}}</h5></th>
       <th scope="col"><h5>{{debit}}</h5></th>
       <th scope="col"><h5>= {{total}}</h5></th>
     </tr>
-    {% else %}
-    <tr>
-    	<th></th>
-    	<th>No Data</th>
-    	<th>Found!</th>
-    	<th></th>
-    </tr>
-    {% endif  %}
   </tbody>
 </table>
+
+{% else %}
+  <div class="col-sm-12 mt-2 text-center">
+    <h3>No data found</h3>
+  </div>
+{% endif  %}
 <!-- __________________________Credit Modal _________________________________-->
 
 <div class="modal fade" id="modalCreditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

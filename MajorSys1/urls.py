@@ -23,7 +23,6 @@ import BasicFunc
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/',include('django.contrib.auth.urls')),
-    path('testing/',basic_views.testingd),
     path('',basic_views.landing),
     path('basic/',include('BasicFunc.urls')),
     path('adminf/',include('AdminFunc.urls')),

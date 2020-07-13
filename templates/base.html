@@ -237,34 +237,13 @@
 		              </p>
 		            </a>
 		          </li>
-		          <li class="nav-item has-treeview">
-		            <a href="#" class="nav-link">
-		              <i class="nav-icon fa fa-clock-o"></i>
+		          <li class="nav-item">
+		            <a href="/adminf/attendance/" class="nav-link {% block attendance_active %}{% endblock %}">
+		              <i class="nav-icon fa fa-clock-o" aria-hidden="true"></i>
 		              <p>
 		                Attendance
-		                <i class="right fa fa-angle-left"></i>
 		              </p>
 		            </a>
-		            <ul class="nav nav-treeview">
-		              <li class="nav-item">
-		                <a href="#" class="nav-link">
-		                  <i class="fa fa-hand-o-up nav-icon"></i>
-		                  <p>Mark Employee Attendance</p>
-		                </a>
-		              </li>
-		              <li class="nav-item">
-		                <a href="#" class="nav-link">
-		                  <i class="fa fa-hand-o-up nav-icon"></i>
-		                  <p>Mark Student Attendance</p>
-		                </a>
-		              </li>
-		              <li class="nav-item">
-		                <a href="#" class="nav-link">
-		                  <i class="fa fa-bar-chart nav-icon"></i>
-		                  <p>Attendance Report</p>
-		                </a>
-		              </li>
-		            </ul>
 		          </li>
 		          <li class="nav-item has-treeview">
 		            <a href="#" class="nav-link">
@@ -402,10 +381,13 @@
 		</aside>
 		<div class="content-wrapper" style="min-hieght: 45px;">
 			<section class="content">
-		  		<div class="card card-solid m-4">
-		  			<div class="card-body pb-0">
-						<div class="view view-cascade gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
-							<a href="" class="white-text" style="margin-left: {% block h_margin %}{% endblock %}%;"><h1>{% block page_heading %}{% endblock%}</h1></a>{% block p_heading_edit %}{% endblock %}
+		  		<div class="card card-solid m-4 row">
+		  			<div class="card-body pb-0 col-sm-12">
+						<div class="view row view-cascade gradient-card-header blue-gradient narrower d-flex mx-3 mb-5 justify-content-between align-items-center">
+							<div class="col-sm-12 my-2 d-flex">
+								<h1 class="white-text" style="margin-left: {% block h_margin %}{% endblock %}%;">{% block page_heading %}{% endblock%}</h1>
+								<div class="ml-auto">{% block p_heading_edit %}{% endblock %}</div>
+							</div>
 						</div>
 		  				{% block admin_body %}
 		  				{% endblock %}

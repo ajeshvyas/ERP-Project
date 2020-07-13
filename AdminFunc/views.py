@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from AdminFunc.forms import Student_Detail_Form, SignUpForm, Employee_Detail_Form, SignUpFormStu, ClassesForm, Institute_Info_Form
-from AdminFunc.models import Student_Details, Employee_Details, Classes, Subjects, Institute_Info, Accounts
+from AdminFunc.models import Student_Details, Employee_Details, Classes, Subjects, Institute_Info, Accounts, Student_Attendance, Employee_Attendance
 from django.contrib import messages
-from MajorSys1.utils import render_to_pdf
-from django.template.loader import get_template
+from django.core.paginator import Paginator
+from datetime import date
 
 # Create your views here.
 
@@ -118,7 +118,7 @@ def Add_Subjects(request,id):
 	else:  # If request method is get
 		return render(request,'AdminFunc/edit_add_subjects.html',{'ca':ca}) # rendering to desired page
 
-# Function to deit desired subject
+# Function to edit desired subject
 def Edit_Subjects(request,id):
 	so = Subjects.objects.get(id=id)  # Getting objects of subject class associated with that id
 	if request.method=="POST":  # If requested method is post
@@ -138,6 +138,7 @@ def Edit_Subjects(request,id):
 
 # function to add Students
 def Add_Student(request):
+	classes_obj = Classes.objects.all()
 	if request.method == "POST": # If requestefd method is POST
 		signup = SignUpFormStu(request.POST)  # Gettingf data through forms
 		student_form = Student_Detail_Form(request.POST)  # Getting data through forms
@@ -149,22 +150,22 @@ def Add_Student(request):
 			student_save.student = signup_data  # Saving foreign key
 			student_save.save()  # Saving form finally
 			# rendering data to desired page after updation with success data
-			return render(request,'AdminFunc/new_student.html',{'msg':"Student Created Successfully"})
+			return render(request,'AdminFunc/new_student.html',{'msg':"Student Created Successfully",'class_obj':classes_obj})
 	else:   # If requested method is GET
 		# rendering user to desired page
-		return render(request,'AdminFunc/new_student.html')
+		return render(request,'AdminFunc/new_student.html',{'class_obj':classes_obj})
 
 # Function to show students
 def Show_Students(request):
 	students = Student_Details.objects.all()  # Getting all objects of Students class
 	# Rendering to show student page with all objects
-	return render(request,'AdminFunc/show_students_employee.html',{'student':students})
+	return render(request,'AdminFunc/show_students_employee.html',{'student':students,'student_rendered':'yes'})
 
 # Function to edit and view profile of desired Student
 def Profile_Student(request,id):
 	data = Student_Details.objects.get(id=id)  # To get objects associated with id
 	user = User.objects.get(id=data.student.id) # To get objects associated with that student
-	cont_data = {'stud':data,'user':user}   # Context data to render to page
+	cont_data = {'stud':data,'user':user,'student_rendered':'yes'}   # Context data to render to page
 	if request.method=="POST":  # If requested method is POST
 		if request.POST['subnum']=='1':  # IF recieved 1 as subnum, Update image
 			image = request.FILES['img']  # Getting image value
@@ -208,7 +209,7 @@ def Delete_Student(request,id):
 def Academic_Details(request):
 	# rendering to desired page
 	# Due work, to be done soon
-	return render(request,'AdminFunc/student_academics.html/')
+	return render(request,'AdminFunc/student_academics.html/',{'student_rendered':'yes'})
 
 # --------------------------------------------------------------------------------------------------------------------
 # ----------------------------------Employee Related Functionalities----------------------------
@@ -228,16 +229,16 @@ def Add_Employee(request):
 			faculty_save.employee = signup_data
 			faculty_save.save()
 			# Rendering to desired page after updation with a success message
-			return render(request,'AdminFunc/new_employee.html',{'msg':"Employee Created Successfully"})
+			return render(request,'AdminFunc/new_employee.html',{'msg':"Employee Created Successfully",'employee_rendered':'yes'})
 	else: # IF requested method is GET
 		# rendering to desired page
-		return render(request,'AdminFunc/new_employee.html')
+		return render(request,'AdminFunc/new_employee.html',{'employee_rendered':'yes'})
 
 # Function toshow employees list on desired page
 def Show_Employees(request):
 	emp = Employee_Details.objects.all()  # Getting all objects
 	# Rendering to desired page
-	return render(request,'AdminFunc/show_students_employee.html',{'employee':emp})
+	return render(request,'AdminFunc/show_students_employee.html',{'employee':emp,'employee_rendered':'yes'})
 
 # Function to view details of employee
 def View_Employees(request):
@@ -251,7 +252,7 @@ def View_Employees(request):
 def Edit_Employee(request,id):
 	data = Employee_Details.objects.get(id=id)
 	user = User.objects.get(id=data.employee.id)
-	cont_data = {'employee':data,'user':user}
+	cont_data = {'employee':data,'user':user,'employee_rendered':'yes'}
 	if request.method=="POST":
 		if request.POST['subnum']=='1':
 			image = request.FILES['img']
@@ -300,8 +301,11 @@ def Show_Accounts(request):
 		for i in data:  # iterating in data to get credit and debit total
 			credit += i.deposite   # Addign credit amount and storing in credit variable
 			debit += i.withdrawal   # Addign debit amount and storing in debit variable
+	paginator = Paginator(data, 10)  # For pagination on page
+	page_number = request.GET.get('page')
+	page_obj = paginator.get_page(page_number)
 	# Context data to render to page
-	context = {'data':data,'credit':credit,'debit':debit,'total':credit-debit}
+	context = {'data':data,'credit':credit,'debit':debit,'total':credit-debit, 'page':page_obj}
 	# To Add data
 	if request.method=='POST':  # IF requested method is POST
 		# Getting data from request
@@ -318,6 +322,83 @@ def Show_Accounts(request):
 		return HttpResponseRedirect('/adminf/accounts/')
 	# Rendering to desired page with context data when Get request got
 	return render(request,'AdminFunc/show_accounts.html',context)
+
+# --------------------------------------------------------------------------------------------------------------------
+# ----------------------------------Attendence Related Functionalities----------------------------
+
+# To render attendence page
+def Show_Attendance(request):
+	class_obj = Classes.objects.all()
+	emp_detail = Employee_Details.objects.all()
+	stud_att = Student_Attendance.objects.all()
+	teach_attend = Employee_Attendance.objects.all()
+	PSA = 0
+	ASA = 0
+	LSA = 0
+	PTA = 0
+	ATA = 0
+	LTA = 0
+	for p in stud_att:
+		if p.date == date.today():
+			if p.status == 'P':
+				PSA += 1
+			elif p.status == 'A':
+				ASA += 1
+			elif p.status == 'L':
+				LSA += 1
+	for q in teach_attend:
+		if q.date == date.today():
+			if q.status == 'P':
+				PTA += 1
+			elif q.status == 'A':
+				ATA += 1
+			elif q.status == 'L':
+				LTA += 1
+	teaching = []
+	non_teaching = []
+	for i in emp_detail:
+		if i.emp_type=='Teaching':
+			teaching.append(i)
+		else:
+			non_teaching.append(i)
+	Obj_id=[]
+	if request.method=="POST":
+		if request.POST['type'] == 'student':
+			class_id = request.POST['class_id']
+			class_data = Classes.objects.get(id = class_id)
+			for i in class_data.student_details_set.all():
+				Obj_id.append(i.id)
+			for i in Obj_id:
+				try:
+					stud_obj = Student_Details.objects.get(id = request.POST['student'+str(i)])
+					save_data = Student_Attendance(student = stud_obj, date = date.today(), status = request.POST['status'+str(i)])
+					save_data.save()
+				except:
+					stud_obj = Student_Details.objects.get(id = request.POST['student'+str(i)])
+					date_today = date.today()
+					Student_Attendance.objects.filter(student = stud_obj).filter(date = date_today).update(status = request.POST['status'+str(i)])
+		elif request.POST['type'] == 'employee':
+			if request.POST['emptype']=='Teaching':
+				for i in teaching:
+					try:
+						save_att = Employee_Attendance(employee=i,date=date.today(),status=request.POST['status'+str(i.id)])
+						save_att.save()
+					except:
+						Employee_Attendance.objects.filter(employee=i.id).filter(date=date.today()).update(status=request.POST['status'+str(i.id)])
+			if request.POST['emptype']=='Non-Teaching':
+				for j in non_teaching:
+					try:
+						print(j.id)
+						save_att = Employee_Attendance(employee=j,date=date.today(),status=request.POST['status'+str(j.id)])
+						save_att.save()
+					except Exception as e:
+						print(e)
+						Employee_Attendance.objects.filter(employee=j.id).filter(date=date.today()).update(status=request.POST['status'+str(j.id)])
+		messages.success(request, "Attendance marked Successfully")
+		return HttpResponseRedirect('/adminf/attendance/')
+	context = {'classes':class_obj,'teaching':teaching,'non_teaching':non_teaching,'stud_attend':stud_att,'teach_attend':teach_attend}
+	context.update({'PSA':PSA,'ASA':ASA,'LSA':LSA,'PTA':PTA,'ATA':ATA,'LTA':LTA,})
+	return render(request,'AdminFunc/show_attendance.html',context)
 
 # --------------------------------------------------------------------------------------------------------------------
 # ----------------------------------Ajax Related Functionalities--------------------------------

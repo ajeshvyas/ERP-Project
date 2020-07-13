@@ -3,8 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Classes(models.Model):
+	added_by = models.ForeignKey(User, on_delete=models.CASCADE)
+	topic = models.CharField(max_length=20)
+	fees = models.DecimalField(max_digits=15, decimal_places=2)
+
 class Student_Details(models.Model):
 	student = models.OneToOneField(User, on_delete=models.CASCADE)
+	in_class = models.ForeignKey(Classes, on_delete=models.CASCADE)
 	created_by = models.CharField(max_length=30)
 	dob = models.DateField()
 	gender = models.CharField(max_length=6, null=True, blank=True)
@@ -34,11 +40,6 @@ class Employee_Details(models.Model):
 	address = models.CharField(max_length=50)
 	img = models.ImageField(upload_to='teacher_profile', default='teacher_profile/default.jpg')
 
-class Classes(models.Model):
-	added_by = models.ForeignKey(User, on_delete=models.CASCADE)
-	topic = models.CharField(max_length=20)
-	fees = models.DecimalField(max_digits=15, decimal_places=2)
-
 class Subjects(models.Model):
 	added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 	class_assigned = models.ForeignKey(Classes, on_delete=models.CASCADE)
@@ -64,3 +65,17 @@ class Accounts(models.Model):
 	description = models.CharField(max_length=1000)
 	deposite = models.DecimalField(max_digits=7, decimal_places=2)
 	withdrawal = models.DecimalField(max_digits=7, decimal_places=2)
+
+class Student_Attendance(models.Model):
+	student = models.ForeignKey(Student_Details, on_delete=models.CASCADE)
+	date = models.DateField(unique=False)
+	status = models.CharField(max_length=1)
+	class Meta:
+		unique_together = ('date', 'student')
+
+class Employee_Attendance(models.Model):
+	employee = models.ForeignKey(Employee_Details, on_delete=models.CASCADE)
+	date = models.DateField(unique=False)
+	status = models.CharField(max_length=1,unique=False)
+	class Meta:
+		unique_together = ('date', 'employee')

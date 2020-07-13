@@ -1,0 +1,471 @@
+{% extends 'base.html' %}
+{% block admin_title %}Attendance{% endblock %}
+{% block page_heading %}Attendance{% endblock%}
+{% block h_margin %}39.5{% endblock %}
+{% block attendance_active %}active{% endblock %}
+{% block admin_body %}
+
+<!--________________________________Blocks end here___________________________________ -->
+
+<style type="text/css">
+  .dropdown-item:hover{
+    background: #3f51b5;
+    color: white !important;
+    border-radius: .25rem;
+  }
+  .dropdown-item{
+    width: 9rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for message in messages %}
+    <strong>{{message}}</strong>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Start your project here-->
+<div class="row my-5">
+
+	<div class="col-sm-6">
+
+		<div class="dropdown ml-5">
+  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Student's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
+  				{% for i in classes%}
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalMark{{i.id}}" href="#">{{i.topic}}</a>
+    			{% empty %}
+    			<a class="dropdown-item disabled" href="#">No class Added</a>
+    			{% endfor %}
+  			</div>
+		</div>
+	</div>
+<!-- Student mark Modal-->
+  {% for i in classes %}
+
+<div class="modal fade" id="modalMark{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{i.topic}} Class attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% if i.student_details_set.all %}
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <form method="post">
+            {% csrf_token %}
+          {% for j in i.student_details_set.all %}
+          <tr>
+            <td>{{j.id}}</td>
+            <td>{{j.student.first_name|add:" "|add:j.student.last_name}}</td>
+            <input type="hidden" name="student{{j.id}}" value="{{j.id}}">
+            <td>{% now "SHORT_DATE_FORMAT" %}</td>
+            <td class="d-flex">
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="P" id="defaultGroupExample1{{j.id}}" name="status{{j.id}}">
+                <label class="custom-control-label" for="defaultGroupExample1{{j.id}}">P</label>
+              </div>
+
+              <!-- Group of default radios - option 2 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="A" id="defaultGroupExample2{{j.id}}" name="status{{j.id}}" checked>
+                <label class="custom-control-label" for="defaultGroupExample2{{j.id}}">A</label>
+              </div>
+
+              <!-- Group of default radios - option 3 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="L" id="defaultGroupExample3{{j.id}}" name="status{{j.id}}">
+                <label class="custom-control-label" for="defaultGroupExample3{{j.id}}">L</label>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+      <input type="hidden" name="class_id" value="{{i.id}}">
+      <input type="hidden" name="type" value="student">
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn indigo text-white"> Save </button>
+      </div>
+      </form>
+      {% else %}
+      <div class="col-sm-12 text-center">
+        <h3>No Students yet</h3>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+  {% endfor %}
+<!-- Student mark Modal END -->
+<!--_________________________________________________________________________________-->
+	<div class="col-sm-6">
+
+		<div class="dropdown float-right mr-5">
+  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Employee's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:80%;" aria-labelledby="dropdownMenu5">
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalMarkEMPT" href="#">Teaching</a>
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalMarkEMPN" href="#">Non-Teaching</a>
+  			</div>
+		</div>
+	</div>
+
+<!-- Employee Teaching mark Modal______________________________________________________________-->
+<div class="modal fade" id="modalMarkEMPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Teaching staff attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <form method="post">
+            {% csrf_token %}
+          {% for i in teaching %}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.employee.first_name|add:" "|add:i.employee.last_name}}</td>
+            <input type="hidden" name="emp{{i.id}}" value="{{i.id}}">
+            <td>{% now "SHORT_DATE_FORMAT" %}</td>
+            <td class="d-flex">
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="P" id="empt1{{i.id}}" name="status{{i.id}}">
+                <label class="custom-control-label" for="empt1{{i.id}}">P</label>
+              </div>
+
+              <!-- Group of default radios - option 2 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="A" id="empt2{{i.id}}" name="status{{i.id}}" checked>
+                <label class="custom-control-label" for="empt2{{i.id}}">A</label>
+              </div>
+
+              <!-- Group of default radios - option 3 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="L" id="empt3{{i.id}}" name="status{{i.id}}">
+                <label class="custom-control-label" for="empt3{{i.id}}">L</label>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+      <input type="hidden" name="type" value="employee">
+      <input type="hidden" name="emptype" value="Teaching">
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn indigo text-white"> Save </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Employee teaching mark Modal END________________________________________________________________-->
+
+<!-- Employee non-Teaching mark Modal-->
+
+<div class="modal fade" id="modalMarkEMPN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Non-Teaching staff attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <form method="post">
+            {% csrf_token %}
+          {% for i in non_teaching %}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.employee.first_name|add:" "|add:i.employee.last_name}}</td>
+            <input type="hidden" name="emp{{i.id}}" value="{{i.id}}">
+            <td>{% now "SHORT_DATE_FORMAT" %}</td>
+            <td class="d-flex">
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="P" id="empnt1{{i.id}}" name="status{{i.id}}">
+                <label class="custom-control-label" for="empnt1{{i.id}}">P</label>
+              </div>
+
+              <!-- Group of default radios - option 2 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="A" id="empnt2{{i.id}}" name="status{{i.id}}" checked>
+                <label class="custom-control-label" for="empnt2{{i.id}}">A</label>
+              </div>
+
+              <!-- Group of default radios - option 3 -->
+              <div class="custom-control custom-radio ml-2">
+                <input type="radio" class="custom-control-input" value="L" id="empnt3{{i.id}}" name="status{{i.id}}">
+                <label class="custom-control-label" for="empnt3{{i.id}}">L</label>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+      <div class="modal-footer d-flex justify-content-center">
+        <input type="hidden" name="emptype" value="Non-Teaching">
+        <input type="hidden" name="type" value="employee">
+        <button type="submit" class="btn indigo text-white"> Save </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Employee non-teaching mark Modal END__________________________________________________________-->
+
+</div>
+<!-- Show Attendance_______________________________________________________________________________-->
+<div class="row my-5">
+
+	<div class="col-sm-6">
+<!-- Show Attendance Student________________________________________________________________________-->
+		<div class="dropdown ml-5">
+  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Student's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
+    			{% for i in classes%}
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalshow{{i.id}}" href="#">{{i.topic}}</a>
+    			{% empty %}
+    			<a class="dropdown-item disabled" href="#">No class Added</a>
+    			{% endfor %}
+  			</div>
+		</div>
+  </div>
+
+
+{% for i in classes %}
+
+<div class="modal fade" id="modalshow{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{i.topic}} Class attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% if i.student_details_set.all %}
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for j in i.student_details_set.all %}
+          {% for k in stud_attend %}
+          {% if j.id == k.student.id %}
+          <tr>
+            <td>{{k.id}}</td>
+            <td>{{j.student.first_name|add:" "|add:j.student.last_name}}</td>
+            <td>{{k.date}}</td>
+            <td>{{k.status}}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="col-sm-12 text-center">
+        <h3>No Students yet</h3>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+  {% endfor %}
+<!-- Show Attendance Student end____________________________________________________________________-->
+  <div class="col-sm-6">
+<!-- Show Attendance EMP________________________________________________________________________-->
+		<div class="dropdown float-right mr-5">
+  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Employee's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:80%;" aria-labelledby="dropdownMenu5">
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalshowEMPT" href="#">Teaching</a>
+    			<a class="dropdown-item" data-toggle="modal" data-target="#modalshowEMPN" href="#">Non-Teaching</a>
+  			</div>
+		</div>
+  </div>
+
+<!-- Employee Teaching Show Modal______________________________________________________________-->
+<div class="modal fade" id="modalshowEMPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Teaching staff attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in teach_attend %}
+          {% if i.employee.emp_type == 'Teaching' %}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.employee.employee.first_name|add:" "|add:i.employee.employee.last_name}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.status}}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Employee teaching Show Modal END________________________________________________________________-->
+
+<!-- Employee non-Teaching Show Modal-->
+
+<div class="modal fade" id="modalshowEMPN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Non-Teaching staff attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in teach_attend %}
+          {% if i.employee.emp_type == 'Non-Teaching' %}
+          <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.employee.employee.first_name|add:" "|add:i.employee.employee.last_name}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.status}}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Employee non-teaching Show Modal END__________________________________________________________-->
+<!-- Show Attendance EMP end____________________________________________________________________-->
+</div>
+<!-- Show Attendance end____________________________________________________________________________-->
+<div class="row my-5">
+	<div class="col-sm-12 text-center"><h4>Today's Attendance Report</h4></div>
+	<div class="col-sm-6 mt-3 text-center">
+<h5 class="" style="margin-right: 5rem;">Student's</h5>
+<table class="table ml-5" style="max-width: 60%;min-width: 60%;">
+  <thead>
+    <tr>
+      <th scope="col">P</th>
+      <th scope="col">A</th>
+      <th scope="col">L</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{PSA}}</td>
+      <td>{{ASA}}</td>
+      <td>{{LSA}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+	</div>
+	<div class="col-sm-6 mt-3 text-center">
+
+<h5 class="" style="margin-left: 8rem;">Employee's</h5>
+
+<table class="table float-right mr-5" style="max-width: 60%;min-width: 60%;">
+  <thead>
+    <tr>
+      <th scope="col">P</th>
+      <th scope="col">A</th>
+      <th scope="col">L</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{PTA}}</td>
+      <td>{{ATA}}</td>
+      <td>{{LTA}}</td>
+    </tr>
+  </tbody>
+</table>
+
+	</div>
+</div>
+
+{% endblock %}

@@ -161,14 +161,27 @@
                         </div>
                     </th>
                 </tr>
+                <tr>
+                    <th>
+                        <div class="md-form form-sm">
+                            <i class="fa fa-home prefix active"></i>
+                            <input type="text" id="perm_address" class="form-control" name="perm_address" required>
+                            <label for="perm_address" class="active">Address *</label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="md-form form-sm">
+                            <select class="md-select form-control" name="in_class">
+                                <option value="" disabled selected>Class *</option>
+                                {% for i in class_obj %}
+                                <option value="{{i.id}}">{{i.topic}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </th>
+                </tr>
             </thead>
         </table>
-        <div class="md-form form-sm ml-3" style="width:60rem;">
-            <i class="fa fa-home prefix active"></i>
-            <input type="text" id="perm_address" class="form-control" name="perm_address" required>
-            <label for="perm_address" class="active">Address *</label>
-        </div>
-        <hr>
         <div>
             <button style="margin-left: 45%" id="save_btn" class="btn btn-info">Save</button>
         </div>

@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-{% block admin_title %}{% if student %}Students{% else %}Employee{% endif %}{% endblock %}
-{% block page_heading %}{% if student %}Students{% else %}Employees{% endif %}{% endblock%}
-{% block h_margin %}{% if student %}40{% else %}40{% endif %}{% endblock %}
-{% block student_active %}{% if student %}active{% endif %}{% endblock %}
-{% block employees_active %}{% if employee %}active{% endif %}{% endblock %}
+{% block admin_title %}{% if student_rendered %}Students{% elif employee_rendered %}Employee{% endif %}{% endblock %}
+{% block page_heading %}{% if student_rendered %}Students{% elif employee_rendered %}Employees{% endif %}{% endblock%}
+{% block h_margin %}{% if student_rendered %}40{% elif employee_rendered %}40{% endif %}{% endblock %}
+{% block student_active %}{% if student_rendered %}active{% endif %}{% endblock %}
+{% block employees_active %}{% if employee_rendered %}active{% endif %}{% endblock %}
 {% block p_heading_edit %}
-    {% if student %}
+    {% if student_rendered %}
         <a href="/adminf/new_student/"><button class="btn btn-info">Add Student</button></a>
-    {% else %}
+    {% elif employee_rendered %}
         <a href="/adminf/new_employee/"><button class="btn btn-info">Add Employee</button></a>
     {% endif %}
 {% endblock %}
+{% load static %}
 {% block admin_body %}
 
 <!--___________________________________Blocks End Here______________________________-->
@@ -23,7 +24,7 @@
 </div>
 {% endif %}
 
-{% if student %}
+{% if student_rendered %}
 
 <div class="row ml-3 mr-0 pr-3">
     {% for i in student %}
@@ -36,7 +37,7 @@
                         <h2 class="lead"><b>{{i.student.first_name|add:" "|add:i.student.last_name}}</b></h2>
                     </div>
                     <div class="col-7">
-                        <p class="text-muted text-sm"><b>About:</b><br>Class: Pyhton<br>Gender: {{i.gender}}<br>Nationality: {{i.nationality}} </p>
+                        <p class="text-muted text-sm"><b>About:</b><br>Class: {{i.in_class.topic}}<br>Gender: {{i.gender}}<br>Nationality: {{i.nationality}} </p>
                     </div>
                     <div class="col-5 text-center mt-2">
                         <a href="{{i.img.url}}" target="_blank"><img src="{{i.img.url}}" alt="{{i.img}}" class="img-circle img-fluid"></a>
@@ -47,7 +48,7 @@
                             <li class="small"><span class="fa-li"><i class="fa fa-lg fa-phone"></i></span> Mother: {{i.father_no}}</li>
                         </ul>
                         <div class="text-center mt-3">
-                            <a href="/adminf/print_letter/{{i.id}}/"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill subj text-white">Print Letter</div></a>
+                            <a data-toggle="modal" data-target="#exampleModal{{i.id}}"><div id="{{i.id}}" style="background-color:#3f51b5;width:12rem;margin-left:1.9rem;" class="p-2 rounded-pill subj text-white">Print Letter</div></a>
                         </div>
                     </div>
                 </div>
@@ -61,10 +62,65 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div id="canvasprint{{i.id}}" class="card text-center">
+  <img class="card-img-top mx-auto" style="max-width: 50%; min-width: 50%;" src="{{i.img.url}}" alt="{{i.img}}">
+  <div class="card-body">
+    <small>ID : 12345678</small>
+    <h5>Name : {{i.student.first_name|add:" "|add:i.student.last_name}}</h5>
+    <h6>Email : {{i.student.email}}</h6>
+    <h6>Class : Python</h6>
+    <h6>Addmission Date : {{i.student.date_joined | date:'Y-m-d'}}</h6>
+    <h6>Portal : https://www.edsys.com</h6>
+  </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <a><button type="button" id="{{i.id}}" class="btn btn-primary mx-auto canvasprint">Print</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal end-->
     {% empty %}
-    <h3>No data Found</h3>
+    <div class="col-sm-12 text-center">
+        <h3>No data Found</h3>
+    </div>
     {% endfor %}
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+    $("body").on("click", ".canvasprint", function () {
+        var print_id = "canvasprint"+this.id
+        console.log(print_id)
+        html2canvas($("#"+print_id), {
+            onrendered: function(canvas) {
+                var myImage = canvas.toDataURL();
+                var tWindow = window.open("");
+                $(tWindow.document.body).html("<img id='Image' src=" + myImage + " style='width:100%;'></img>").ready(function() {
+                        tWindow.focus();
+                        tWindow.print();
+                    }
+                );
+            }
+        });
+    });
+    </script>
+
 <!--  ________________________________FOR EMPLYEES START HERE______________________________________-->
 {% else %}
 
@@ -101,7 +157,9 @@
         </div>
     </div>
     {% empty %}
-    <h3>No data Found</h3>
+    <div class="col-sm-12 text-center">
+        <h3>No data Found</h3>
+    </div>
     {% endfor %}
 </div>
 {% endif %}
