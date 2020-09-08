@@ -79,3 +79,8 @@ class Employee_Attendance(models.Model):
 	status = models.CharField(max_length=1,unique=False)
 	class Meta:
 		unique_together = ('date', 'employee')
+
+class Fees(models.Model):
+	student = models.ForeignKey(Student_Details, on_delete=models.CASCADE)
+	date = models.DateField(unique=False)
+	paid = models.DecimalField(max_digits=8, decimal_places=2)

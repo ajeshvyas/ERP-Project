@@ -1,16 +1,10 @@
 {% extends 'base.html' %}
 {% block admin_title %}Accounts{% endblock %}
 {% block page_heading %}Accounts{% endblock%}
-{% block h_margin %}40.5{% endblock %}
+{% block h_margin %}52.5{% endblock %}
 {% block accounts_active %}active{% endblock %}
 {% block p_heading_edit %}
-<div class="dropdown">
-  <button class="btn text-white btn-info dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Record</button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu5">
-    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalCreditForm" class="btn rounded-pill indigo lighten-5">Add Income</a>
-    <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalDebitForm" style="float:right;" class="btn rounded-pill indigo lighten-5">Add Expense</a>
-  </div>
-</div>
+<a href="" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#modalLRForm">Add Record</a>
 {% endblock %}
 {% block admin_body %}
 
@@ -23,6 +17,7 @@
 </div>
 {% endif %}
       {% if data %}
+  <div class="table-responsive">
   <table class="table text-center table-striped mb-3">
   <thead class="indigo lighten-1 text-white">
     <tr>
@@ -41,7 +36,6 @@
       <td>{{i.description}}</td>
     </tr>
     {% endfor %}
-    
     <tr>
       <th scope="col"><h5>Total</h5></th>
       <th scope="col"><h5>{{credit}}</h5></th>
@@ -50,13 +44,13 @@
     </tr>
   </tbody>
 </table>
-
+</div>
 {% else %}
   <div class="col-sm-12 mt-2 text-center">
     <h3>No data found</h3>
   </div>
 {% endif  %}
-<!-- __________________________Credit Modal _________________________________-->
+<!-- __________________________Credit Modal _________________________________
 
 <div class="modal fade" id="modalCreditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
@@ -98,8 +92,8 @@
     </div>
   </div>
 </div>
-
-<!-- _________________________________Debit MODAL___________________________-->
+-->
+<!-- _________________________________Debit MODAL___________________________
 
 <div class="modal fade" id="modalDebitForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
@@ -139,6 +133,106 @@
       </div>
       </form>
     </div>
+  </div>
+</div>
+-->
+<!-- __________________________________Common Modal______________________________-->
+
+<div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Modal cascading tabs-->
+      <div class="">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs md-tabs tabs-2 mt-2 mx-2" role="tablist">
+          <li class="nav-item col-sm-6 text-center indigo">
+            <a class="nav-link btn indigo lighten-2" data-toggle="tab" href="#panel7" role="tab">Add Income</a>
+          </li>
+          <li class="nav-item col-sm-6 text-center indigo">
+            <a class="nav-link btn indigo lighten-2" data-toggle="tab" href="#panel8" role="tab">Add Expense</a>
+          </li>
+        </ul>
+
+        <!-- Tab panels -->
+        <div class="tab-content">
+          <!--Panel 7-->
+          <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+
+            <!--Body-->
+            <div class="modal-body mb-1">
+              <form method="post" action="/adminf/accounts/">
+              {% csrf_token %}
+                <div class="md-form mb-5">
+                  <i class="fa fa-calendar prefix grey-text"></i>
+                  <input type="date" id="form34" name="date" class="form-control validate">
+                  <label data-error="wrong" data-success="right" for="form34">Date</label>
+                </div>
+
+                <div class="md-form mb-5">
+                  <i class="fa fa-money prefix grey-text"></i>
+                  <input type="text" pattern="[0-9]{1,7}" name="credit" step="0.01" id="form29" class="form-control validate">
+                  <label for="form29">Credit</label>
+                </div>
+
+                <div class="md-form">
+                  <i class="fa fa-pencil prefix grey-text"></i>
+                  <textarea type="text" pattern=".{1000}" name="description" id="form8" class="md-textarea form-control" rows="4"></textarea>
+                  <label data-error="wrong" data-success="right" for="form8">Description</label>
+                </div>
+                <input type="hidden" name="debit" value="0">
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+              <button type="submit" class="btn indigo text-white mr-auto">Add <i class="fa fa-plus ml-1"></i></button>
+              </form>
+              <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+          <!--/.Panel 7-->
+
+          <!--Panel 8-->
+          <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+            <!--Body-->
+            <div class="modal-body">
+              <form method="post" action="/adminf/accounts/">
+              {% csrf_token %}
+                <div class="md-form mb-5">
+                  <i class="fa fa-calendar prefix grey-text"></i>
+                  <input type="date" id="form34" name="date" class="form-control validate">
+                  <label data-error="wrong" data-success="right" for="form34">Date</label>
+                </div>
+
+                <div class="md-form mb-5">
+                  <i class="fa fa-money prefix grey-text"></i>
+                  <input type="text" pattern="[0-9]{1,7}" name="debit" step="0.01" id="form29" class="form-control validate">
+                  <label for="form29">Debit</label>
+                </div>
+                <input type="hidden" name="credit" value="0">
+
+                <div class="md-form">
+                  <i class="fa fa-pencil prefix grey-text"></i>
+                  <textarea type="text" pattern=".{1000}" name="description" id="form8" class="md-textarea form-control" rows="4"></textarea>
+                  <label data-error="wrong" data-success="right" for="form8">Description</label>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+              <button type="submit" class="btn indigo text-white mr-auto">Add <i class="fa fa-plus ml-1"></i></button>
+              </form>
+              <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!--/.Panel 8-->
+        </div>
+
+      </div>
+    </div>
+    <!--/.Content-->
   </div>
 </div>
 

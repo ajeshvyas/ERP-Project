@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
 {% block admin_title %}Attendance{% endblock %}
 {% block page_heading %}Attendance{% endblock%}
-{% block h_margin %}39.5{% endblock %}
+{% block p_heading_edit %}<button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+  aria-haspopup="true" aria-expanded="false">Basic dropdown</button>
+
+<div class="dropdown-menu">
+  <a class="dropdown-item" href="#">Action</a>
+  <a class="dropdown-item" href="#">Another action</a>
+  <a class="dropdown-item" href="#">Something else here</a>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="#">Separated link</a>
+</div>
+<!-- Basic dropdown -->{% endblock %}
+{% block h_margin %}53{% endblock %}
 {% block attendance_active %}active{% endblock %}
 {% block admin_body %}
 
 <!--________________________________Blocks end here___________________________________ -->
 
-<style type="text/css">
-  .dropdown-item:hover{
-    background: #3f51b5;
-    color: white !important;
-    border-radius: .25rem;
-  }
-  .dropdown-item{
-    width: 9rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
-</style>
 {% if messages %}
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -27,14 +26,73 @@
     {% endfor %}
 </div>
 {% endif %}
+<!--____________________________________Media Query_________________________________________-->
 
-<!-- Start your project here-->
-<div class="row my-5">
+<style type="text/css">
+.dropdown-button-att {
+    max-width: 20rem;
+    min-width: 20rem;
+}
+.table-heading-right {
+    margin-left: 29%;
+}
+.table-heading-left {
+    margin-right: 28%;
+}
+.table-right {
+    float: right;
+    margin-right: 5%;
+}
+.table-left {
+    margin-left: 5%;
+}
 
-	<div class="col-sm-6">
+@media only screen and (min-width: 376px) and (max-width: 768px) {
+    .dropdown-button-att {
+        margin-left: 7%;
+        margin-bottom: 2%;
+    }
+    .table-media {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .table-right {
+        float: none;
+    }
+    .table-heading-right {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .table-heading-left {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
-		<div class="dropdown ml-5">
-  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Student's Attendance</button>
+@media only screen and (min-width: 768px) {
+    .dd-left {
+        margin-left: 10%;
+    }
+    .dd-right{
+        float: right;
+        margin-right: 10%;
+    }
+}
+
+
+</style>
+
+<!--____________________________________Media Query end_________________________________________-->
+
+<!--_________________________________Mark Attendance________________________________________-->
+
+<div class="row my-5 ddwrow">
+
+<!--_________________________________Mark Student Attendance________________________________________-->
+
+    <div class="col-md-6">
+        <div class="dropdown">
+  			<button class="btn dd-left dropdown-button-att text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Student's Attendance</button>
   			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
   				{% for i in classes%}
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalMark{{i.id}}" href="#">{{i.topic}}</a>
@@ -44,7 +102,8 @@
   			</div>
 		</div>
 	</div>
-<!-- Student mark Modal-->
+
+    <!--____________________________ Student mark Modal_____________________________-->
   {% for i in classes %}
 
 <div class="modal fade" id="modalMark{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -116,20 +175,21 @@
 
 
   {% endfor %}
-<!-- Student mark Modal END -->
-<!--_________________________________________________________________________________-->
-	<div class="col-sm-6">
+<!-- __________________________________Student mark Modal END_________________________ -->
 
-		<div class="dropdown float-right mr-5">
-  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Employee's Attendance</button>
-  			<div class="dropdown-menu ml-4" style="width:80%;" aria-labelledby="dropdownMenu5">
+<!--_________________________________Mark Employee Attendance________________________________________-->
+
+    <div class="col-md-6">
+        <div class="dropdown">
+  			<button class="btn dd-right dropdown-button-att text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mark Employee's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalMarkEMPT" href="#">Teaching</a>
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalMarkEMPN" href="#">Non-Teaching</a>
   			</div>
 		</div>
 	</div>
 
-<!-- Employee Teaching mark Modal______________________________________________________________-->
+    <!-- Employee Teaching mark Modal______________________________________________________________-->
 <div class="modal fade" id="modalMarkEMPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -258,15 +318,15 @@
 </div>
 
 <!-- Employee non-teaching mark Modal END__________________________________________________________-->
+<!-- Mark Attendance end____________________________________________________________________________-->
 
-</div>
 <!-- Show Attendance_______________________________________________________________________________-->
-<div class="row my-5">
 
-	<div class="col-sm-6">
-<!-- Show Attendance Student________________________________________________________________________-->
-		<div class="dropdown ml-5">
-  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Student's Attendance</button>
+<!-- Show Attendance Student_______________________________________________________________________-->
+
+    <div class="col-md-6">
+        <div class="dropdown">
+  			<button class="btn dd-left dropdown-button-att text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Student's Attendance</button>
   			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
     			{% for i in classes%}
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalshow{{i.id}}" href="#">{{i.topic}}</a>
@@ -275,9 +335,8 @@
     			{% endfor %}
   			</div>
 		</div>
-  </div>
-
-
+    </div>
+<!--______________________________________View student attendance modal______________-->
 {% for i in classes %}
 
 <div class="modal fade" id="modalshow{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -326,17 +385,71 @@
 
 
   {% endfor %}
-<!-- Show Attendance Student end____________________________________________________________________-->
-  <div class="col-sm-6">
-<!-- Show Attendance EMP________________________________________________________________________-->
-		<div class="dropdown float-right mr-5">
-  			<button class="btn text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Employee's Attendance</button>
-  			<div class="dropdown-menu ml-4" style="width:80%;" aria-labelledby="dropdownMenu5">
+<!--______________________________________View student attendance modal end______________-->
+
+<!-- Show Attendance Student End__________________________________________________________________-->
+
+    <div class="col-md-6">
+		<div class="dropdown">
+  			<button class="btn dd-right dropdown-button-att text-white indigo dropdown-toggle" type="button" id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View Employee's Attendance</button>
+  			<div class="dropdown-menu ml-4" style="width:55%;" aria-labelledby="dropdownMenu5">
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalshowEMPT" href="#">Teaching</a>
     			<a class="dropdown-item" data-toggle="modal" data-target="#modalshowEMPN" href="#">Non-Teaching</a>
   			</div>
 		</div>
+    </div>
+</div>
+
+<!--______________________________________View student attendance modal______________-->
+{% for i in classes %}
+
+<div class="modal fade" id="modalshow{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">{{i.topic}} Class attendance</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% if i.student_details_set.all %}
+      <table class="table text-center mx-5" style="max-width: 80%;min-width: 80%;">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for j in i.student_details_set.all %}
+          {% for k in stud_attend %}
+          {% if j.id == k.student.id %}
+          <tr>
+            <td>{{k.id}}</td>
+            <td>{{j.student.first_name|add:" "|add:j.student.last_name}}</td>
+            <td>{{k.date}}</td>
+            <td>{{k.status}}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="col-sm-12 text-center">
+        <h3>No Students yet</h3>
+      </div>
+      {% endif %}
+    </div>
   </div>
+</div>
+
+
+  {% endfor %}
+<!--______________________________________View student attendance modal end______________-->
 
 <!-- Employee Teaching Show Modal______________________________________________________________-->
 <div class="modal fade" id="modalshowEMPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -418,54 +531,49 @@
 </div>
 
 <!-- Employee non-teaching Show Modal END__________________________________________________________-->
-<!-- Show Attendance EMP end____________________________________________________________________-->
-</div>
+
 <!-- Show Attendance end____________________________________________________________________________-->
+
 <div class="row my-5">
 	<div class="col-sm-12 text-center"><h4>Today's Attendance Report</h4></div>
-	<div class="col-sm-6 mt-3 text-center">
-<h5 class="" style="margin-right: 5rem;">Student's</h5>
-<table class="table ml-5" style="max-width: 60%;min-width: 60%;">
-  <thead>
-    <tr>
-      <th scope="col">P</th>
-      <th scope="col">A</th>
-      <th scope="col">L</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{PSA}}</td>
-      <td>{{ASA}}</td>
-      <td>{{LSA}}</td>
-    </tr>
-  </tbody>
-</table>
-
-
-	</div>
-	<div class="col-sm-6 mt-3 text-center">
-
-<h5 class="" style="margin-left: 8rem;">Employee's</h5>
-
-<table class="table float-right mr-5" style="max-width: 60%;min-width: 60%;">
-  <thead>
-    <tr>
-      <th scope="col">P</th>
-      <th scope="col">A</th>
-      <th scope="col">L</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{PTA}}</td>
-      <td>{{ATA}}</td>
-      <td>{{LTA}}</td>
-    </tr>
-  </tbody>
-</table>
-
-	</div>
+	<div class="col-md-6 mt-3 text-center">
+        <h5 class="table-heading-left">Student's</h5>
+        <table class="table table-left table-media" style="max-width: 60%;min-width: 60%;">
+            <thead>
+                <tr>
+                  <th scope="col">P</th>
+                  <th scope="col">A</th>
+                  <th scope="col">L</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>{{PSA}}</td>
+                  <td>{{ASA}}</td>
+                  <td>{{LSA}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+	<div class="col-md-6 mt-3 text-center">
+        <h5 class="table-heading-right">Employee's</h5>
+        <table class="table table-right table-media" style="max-width: 60%;min-width: 60%;">
+            <thead>
+                <tr>
+                  <th scope="col">P</th>
+                  <th scope="col">A</th>
+                  <th scope="col">L</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>{{PTA}}</td>
+                  <td>{{ATA}}</td>
+                  <td>{{LTA}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}
