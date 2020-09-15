@@ -84,3 +84,4 @@ class Fees(models.Model):
 	student = models.ForeignKey(Student_Details, on_delete=models.CASCADE)
 	date = models.DateField(unique=False)
 	paid = models.DecimalField(max_digits=8, decimal_places=2)
+	total_paid = models.DecimalField(max_digits=8, decimal_places=2)

@@ -401,6 +401,9 @@ def Show_Attendance(request):
 	return render(request,'AdminFunc/show_attendance.html',context)
 
 # --------------------------------------------------------------------------------------------------------------------
+# ----------------------------------Fees Menu Functionalities--------------------------------
+
+
 # ----------------------------------Ajax Related Functionalities--------------------------------
 
 # To validate username

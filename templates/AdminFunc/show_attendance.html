@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block admin_title %}Attendance{% endblock %}
 {% block page_heading %}Attendance{% endblock%}
-{% block p_heading_edit %}<button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
-  aria-haspopup="true" aria-expanded="false">Basic dropdown</button>
+{% block h_margin %}53{% endblock %}
+{% block p_heading_edit %}<!-- Basic dropdown -->
+<button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
 
-<div class="dropdown-menu">
+<div class="dropdown-menu drp">
   <a class="dropdown-item" href="#">Action</a>
   <a class="dropdown-item" href="#">Another action</a>
   <a class="dropdown-item" href="#">Something else here</a>
@@ -12,7 +13,6 @@
   <a class="dropdown-item" href="#">Separated link</a>
 </div>
 <!-- Basic dropdown -->{% endblock %}
-{% block h_margin %}53{% endblock %}
 {% block attendance_active %}active{% endblock %}
 {% block admin_body %}
 

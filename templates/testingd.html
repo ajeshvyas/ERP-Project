@@ -5,45 +5,101 @@
   <!-- CSS only -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style type="text/css">
+    body{
+  padding:20px 20px;
+}
+
+.results tr[visible='false'],
+.no-result{
+  display:none;
+}
+
+.results tr[visible='true']{
+  display:table-row;
+}
+
+.counter{
+  padding:8px; 
+  color:#ccc;
+}
+  </style>
 </head>
 <body>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       <div class="card text-center">
-  <img class="card-img-top mx-auto" style="max-width: 50%; min-width: 50%;" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/User_font_awesome.svg" alt="Card image cap">
-  <div class="card-body">
-    <small>ID : 12345678</small>
-    <h5 class="card-title">Name : Ajesh Vyas</h5>
-    <h6>Email : ajeshvays7566@gmail.com</h6>
-    <h6>Class : Python</h6>
-    <h6>Addmission Date : 21/12/2020</h6>
-    <h6>Portal : https://www.edsys.com</h6>
-  </div>
+<div class="form-group pull-left">
+    <input type="text" class="search form-control" placeholder="What you looking for?">
 </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary mx-auto">Print</button>
-      </div>
-    </div>
-  </div>
-</div>
+<table class="table table-responsive table-hover table-bordered results">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th class="col-md-4 col-xs-4">Name / Surname</th>
+      <th class="col-md-4 col-xs-4">Job</th>
+      <th class="col-md-4 col-xs-4">City</th>
+    </tr>
+    <tr class="warning no-result">
+      <td colspan="4"><i class="fa fa-warning"></i> No result</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Vatanay Özbeyli</td>
+      <td>UI & UX</td>
+      <td>Istanbul</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Burak Özkan</td>
+      <td>Software Developer</td>
+      <td>Istanbul</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Egemen Özbeyli</td>
+      <td>Purchasing</td>
+      <td>Kocaeli</td>
+    </tr>
+    <tr>
+      <th scope="row">4</th>
+      <td>Engin Kızıl</td>
+      <td>Sales</td>
+      <td>Bozuyük</td>
+    </tr>
+  </tbody>
+</table>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  $(".search").keyup(function () {
+    var searchTerm = $(".search").val();
+    var listItem = $('.results tbody').children('tr');
+    var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+    
+  $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+        return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+    }
+  });
+    
+  $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+    $(this).attr('visible','false');
+  });
+
+  $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+    $(this).attr('visible','true');
+  });
+
+  var jobCount = $('.results tbody tr[visible="true"]').length;
+    $('.counter').text(jobCount + ' item');
+
+  if(jobCount == '0') {$('.no-result').show();}
+    else {$('.no-result').hide();}
+      });
+});
+</script>
+  
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
